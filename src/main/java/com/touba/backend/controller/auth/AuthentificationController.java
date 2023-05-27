@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.touba.backend.utils.Constants.APP_ROOT;
+
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(APP_ROOT + "/auth")
 public class AuthentificationController {
 
     @Autowired
