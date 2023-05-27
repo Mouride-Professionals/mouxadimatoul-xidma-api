@@ -37,7 +37,10 @@ public class ApplicationSecurity {
         return http.csrf().disable()
                 .cors().configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
-                    // configuration.setAllowedOrigins(List.of("http://localhost:9000"));
+                     configuration.setAllowedOrigins(List.of(
+                             "http://localhost:4200",
+                             "http://192.168.1.130:4200"
+                     ));
                     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
                     configuration.setAllowedHeaders(List.of("*"));
                     return configuration;

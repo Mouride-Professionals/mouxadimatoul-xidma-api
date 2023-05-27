@@ -21,12 +21,12 @@ public class ApplicationLoader implements CommandLineRunner {
     private RoleRepository roleRepository;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         if (roleRepository.count() <= 0) {
             System.out.println("Load fixtures");
             loadRoles();
             utilisateurRepository.save(new Utilisateur(
-                    "admin",
+                    "776543212",
                     new BCryptPasswordEncoder().encode("admin"),
                     roleRepository.findByLibelle("admin").orElseThrow(),
                     true,

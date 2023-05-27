@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -39,6 +41,17 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         utilisateur.setStatut(true);
         utilisateur.setPassword(new BCryptPasswordEncoder().encode("test"));
         return UtilisateurDto.fromEntity(utilisateurRepository.save(utilisateur));
+    }
+
+    @Override
+    public UtilisateurDto getAccount() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!StringUtils.hasLength(username)) {
+            throw new EntityNotFoundException("L'utilisateur ne s'est pas connecté");
+        }
+        return UtilisateurDto.fromEntity(
+                utilisateurRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("Cet utilisateur n'existe pas"))
+        );
     }
 
     @Override

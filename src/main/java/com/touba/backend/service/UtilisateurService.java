@@ -9,6 +9,8 @@ public interface UtilisateurService {
 
     UtilisateurDto save(UtilisateurDto dto);
 
+    UtilisateurDto getAccount();
+
     UtilisateurDto update(UtilisateurDto dto);
 
     UtilisateurDto findById(Long id);

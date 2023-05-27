@@ -21,6 +21,9 @@ public interface UtilisateurApi {
     @PutMapping
     UtilisateurDto update(@RequestBody UtilisateurDto dto);
 
+    @GetMapping("/info")
+    UtilisateurDto getAccount();
+
     @GetMapping("/{id}")
     UtilisateurDto findById(@PathVariable Long id);
 
