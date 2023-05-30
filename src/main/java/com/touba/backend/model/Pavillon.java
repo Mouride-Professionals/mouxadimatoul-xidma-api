@@ -1,14 +1,13 @@
 package com.touba.backend.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -21,10 +20,12 @@ public class Pavillon extends AbstractModel{
 
     private Integer niveau;
 
-    @ManyToOne()
+    private Boolean archive;
+
+    @ManyToOne
     private Residence residence;
 
-    @OneToMany(mappedBy = "pavillon")
-    private Set<Chambre> chambres;
+    @OneToMany(mappedBy = "pavillon", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    private List<Chambre> chambres = new ArrayList<>();
 
 }

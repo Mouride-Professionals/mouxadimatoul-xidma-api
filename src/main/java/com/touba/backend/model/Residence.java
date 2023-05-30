@@ -1,13 +1,13 @@
 package com.touba.backend.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,13 +24,15 @@ public class Residence extends AbstractModel{
 
     private String telephoneResidence;
 
+    private Boolean archive;
+
     @OneToOne(cascade = CascadeType.ALL)
     private Ressource image;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     private Utilisateur responsable;
 
-    @OneToMany(mappedBy = "residence")
-    private Set<Pavillon> pavillons;
+    @OneToMany(mappedBy = "residence", fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    private List<Pavillon> pavillons = new ArrayList<>();
 
 }

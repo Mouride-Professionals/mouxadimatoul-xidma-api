@@ -1,7 +1,9 @@
 package com.touba.backend.config;
 
+import com.touba.backend.model.Evenement;
 import com.touba.backend.model.Role;
 import com.touba.backend.model.Utilisateur;
+import com.touba.backend.repository.EvenementRepository;
 import com.touba.backend.repository.RoleRepository;
 import com.touba.backend.repository.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +22,15 @@ public class ApplicationLoader implements CommandLineRunner {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private EvenementRepository evenementRepository;
+
     @Override
     public void run(String... args) {
         if (roleRepository.count() <= 0) {
             System.out.println("Load fixtures");
             loadRoles();
-            utilisateurRepository.save(new Utilisateur(
+            utilisateurRepository.saveAll(List.of(new Utilisateur(
                     "776543212",
                     new BCryptPasswordEncoder().encode("admin"),
                     roleRepository.findByLibelle("admin").orElseThrow(),
@@ -33,6 +38,19 @@ public class ApplicationLoader implements CommandLineRunner {
                     "Cheikh",
                     "Sow",
                     "777899876"
+            ), new Utilisateur(
+                    "778900987",
+                    new BCryptPasswordEncoder().encode("responsable"),
+                    roleRepository.findByLibelle("responsable").orElseThrow(),
+                    true,
+                    "Papa Djiby",
+                    "Niang",
+                    "778900987"
+            )));
+            evenementRepository.saveAll(List.of(
+                    new Evenement("Magal de Touba"),
+                    new Evenement("Magal Kaju Rajab"),
+                    new Evenement("Touba Bootcamp 1ere edition")
             ));
         }
     }

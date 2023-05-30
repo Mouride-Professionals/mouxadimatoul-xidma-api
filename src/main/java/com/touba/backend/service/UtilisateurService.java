@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 
 public interface UtilisateurService {
 
-    Page<UtilisateurDto> findAll(int page, int size, String search);
+    Page<UtilisateurDto> findAll(int page, int size, String search, String role);
 
     UtilisateurDto save(UtilisateurDto dto);
 

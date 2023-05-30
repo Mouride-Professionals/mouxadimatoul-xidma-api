@@ -27,7 +27,10 @@ public class ChambreDto {
                 .nombrePlace(chambre.getNombrePlace())
                 .description(chambre.getDescription())
                 .numero(chambre.getNumero())
-                .pavillon(PavillonDto.fromEntity(chambre.getPavillon()))
+                .pavillon(chambre.getPavillon() != null ? PavillonDto.builder()
+                        .id(chambre.getPavillon().getId())
+                        .libelle(chambre.getPavillon().getLibelle())
+                        .build() : null)
                 .build();
     }
 

@@ -25,9 +25,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     private UtilisateurRepository utilisateurRepository;
 
     @Override
-    public Page<UtilisateurDto> findAll(int page, int size, String search) {
+    public Page<UtilisateurDto> findAll(int page, int size, String search, String role) {
         Pageable pageable = PageRequest.of(page, size);
-        return utilisateurRepository.findAllBySearch(pageable, search.toLowerCase().trim()).map(UtilisateurDto::fromEntity);
+        return utilisateurRepository.findAllBySearch(pageable, search.toLowerCase().trim(), role).map(UtilisateurDto::fromEntity);
     }
 
     @Override

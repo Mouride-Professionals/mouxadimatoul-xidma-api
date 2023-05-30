@@ -13,7 +13,8 @@ public interface UtilisateurApi {
     Page<UtilisateurDto> findAll(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
-            @RequestParam(defaultValue = "") String search);
+            @RequestParam(defaultValue = "") String search,
+            @RequestParam(defaultValue = "") String role);
 
     @PostMapping
     UtilisateurDto save(@RequestBody UtilisateurDto dto);

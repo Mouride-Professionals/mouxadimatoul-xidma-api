@@ -4,6 +4,9 @@ import com.touba.backend.model.Residence;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,11 +24,13 @@ public class ResidenceDto {
 
     private String telephoneResidence;
 
+    private Boolean archive;
+
     private RessourceDto image;
 
     private UtilisateurDto responsable;
 
-    private Set<PavillonDto> pavillons;
+    private List<PavillonDto> pavillons;
 
     public static ResidenceDto fromEntity(Residence residence) {
         if (residence == null) {
@@ -39,7 +44,7 @@ public class ResidenceDto {
                 .telephoneResidence(residence.getTelephoneResidence())
                 .image(RessourceDto.fromEntity(residence.getImage()))
                 .responsable(UtilisateurDto.fromEntity(residence.getResponsable()))
-                .pavillons(residence.getPavillons().stream().map(PavillonDto::fromEntity).collect(Collectors.toSet()))
+                .pavillons(residence.getPavillons().stream().map(PavillonDto::fromEntity).collect(Collectors.toList()))
                 .build();
     }
 
@@ -55,7 +60,6 @@ public class ResidenceDto {
         residence.setTelephoneResidence(dto.getTelephoneResidence());
         residence.setImage(RessourceDto.toEntity(dto.getImage()));
         residence.setResponsable(UtilisateurDto.toEntity(dto.getResponsable()));
-        residence.setPavillons(dto.getPavillons().stream().map(PavillonDto::toEntity).collect(Collectors.toSet()));
         return residence;
     }
 
