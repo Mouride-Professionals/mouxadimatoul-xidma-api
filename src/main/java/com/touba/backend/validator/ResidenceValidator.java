@@ -1,0 +1,28 @@
+package com.touba.backend.validator;
+
+import com.touba.backend.dto.request.ResidenceRequest;
+import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ResidenceValidator {
+
+    public static List<String> validate(ResidenceRequest req) {
+        List<String> errors = new ArrayList<>();
+        if (!StringUtils.hasLength(req.getLibelle())) {
+            errors.add("Le libellé doit être obligatoire");
+        }
+        if (!StringUtils.hasLength(req.getAdresse())) {
+            errors.add("Le'adresse doit être obligatoire");
+        }
+        if (!StringUtils.hasLength(req.getTelephoneResidence())) {
+            errors.add("Le téléphone doit être obligatoire");
+        }
+        if (!StringUtils.hasLength(req.getResponsable())) {
+            errors.add("Le responsable doit être obligatoire");
+        }
+        return errors;
+    }
+
+}
