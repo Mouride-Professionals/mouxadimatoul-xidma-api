@@ -15,7 +15,8 @@ public interface ResidenceApi {
     @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResidenceDto save(@ModelAttribute ResidenceRequest request);
 
-    ResidenceDto update(ResidenceDto dto);
+    @PutMapping
+    ResidenceDto update(@RequestBody ResidenceDto dto);
 
     @GetMapping
     List<ResidenceDto> findAll();

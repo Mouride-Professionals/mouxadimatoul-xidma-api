@@ -49,7 +49,7 @@ public class PavillonDto {
         pavillon.setLibelle(dto.getLibelle());
         pavillon.setNiveau(dto.getNiveau());
         pavillon.setResidence(ResidenceDto.toEntity(dto.getResidence()));
-        pavillon.setChambres(dto.getChambres().stream().map(ChambreDto::toEntity).collect(Collectors.toList()));
+        pavillon.setChambres(dto.getChambres() != null ? dto.getChambres().stream().map(ChambreDto::toEntity).collect(Collectors.toList()) : new ArrayList<>());
         return pavillon;
     }
 

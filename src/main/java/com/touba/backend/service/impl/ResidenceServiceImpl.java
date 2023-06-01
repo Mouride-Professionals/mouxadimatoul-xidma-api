@@ -51,7 +51,11 @@ public class ResidenceServiceImpl implements ResidenceService {
 
     @Override
     public ResidenceDto update(ResidenceDto dto) {
-        return null;
+        List<String> errors = ResidenceValidator.validate(dto);
+        if (!errors.isEmpty()) {
+            throw new EntityInvalidException("La résidence n'est pas valid", errors);
+        }
+        return ResidenceDto.fromEntity(residenceRepository.save(ResidenceDto.toEntity(dto)));
     }
 
     @Override

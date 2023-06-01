@@ -16,6 +16,8 @@ public class ChambreDto {
 
     private String numero;
 
+    private String reference;
+
     private PavillonDto pavillon;
 
     public static ChambreDto fromEntity(Chambre chambre) {
@@ -26,6 +28,7 @@ public class ChambreDto {
                 .id(chambre.getId())
                 .nombrePlace(chambre.getNombrePlace())
                 .description(chambre.getDescription())
+                .reference(chambre.getReference())
                 .numero(chambre.getNumero())
                 .pavillon(chambre.getPavillon() != null ? PavillonDto.builder()
                         .id(chambre.getPavillon().getId())
@@ -43,6 +46,7 @@ public class ChambreDto {
         chambre.setNombrePlace(dto.getNombrePlace());
         chambre.setDescription(dto.getDescription());
         chambre.setNumero(dto.getNumero());
+        chambre.setReference(dto.getReference());
         chambre.setPavillon(PavillonDto.toEntity(dto.getPavillon()));
         return chambre;
     }

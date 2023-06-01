@@ -3,6 +3,7 @@ package com.touba.backend.service.impl;
 import com.touba.backend.dto.PavillonDto;
 import com.touba.backend.exception.EntityInvalidException;
 import com.touba.backend.exception.EntityNotFoundException;
+import com.touba.backend.model.Pavillon;
 import com.touba.backend.repository.PavillonRepository;
 import com.touba.backend.service.PavillonService;
 import com.touba.backend.validator.PavillonValidator;
@@ -24,7 +25,11 @@ public class PavillonServiceImpl implements PavillonService {
         if (!errors.isEmpty()) {
             throw new EntityInvalidException("Le pavillon n'est pas valid", errors);
         }
-        return PavillonDto.fromEntity(pavillonRepository.save(PavillonDto.toEntity(dto)));
+        Pavillon pavillon =PavillonDto.toEntity(dto);
+        pavillon.getChambres().forEach(c -> {
+            c.setPavillon(pavillon);
+        });
+        return PavillonDto.fromEntity(pavillonRepository.save(pavillon));
     }
 
     @Override

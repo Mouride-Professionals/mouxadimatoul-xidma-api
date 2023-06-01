@@ -1,9 +1,6 @@
 package com.touba.backend.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,9 +17,12 @@ public class Chambre extends AbstractModel{
 
     private String numero;
 
+    @Column(unique = true)
+    private String reference;
+
     private Boolean archive;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Pavillon pavillon;
 
 }
