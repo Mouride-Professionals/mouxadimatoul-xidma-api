@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -25,4 +28,6 @@ public class Chambre extends AbstractModel{
     @ManyToOne(fetch = FetchType.LAZY)
     private Pavillon pavillon;
 
+    @OneToMany(mappedBy = "chambre")
+    private List<Reservation> reservations = new ArrayList<>();
 }

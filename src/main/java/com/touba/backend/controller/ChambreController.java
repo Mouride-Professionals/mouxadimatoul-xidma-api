@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+import java.util.List;
+
 @RestController
 public class ChambreController implements ChambreApi {
 
@@ -31,5 +34,10 @@ public class ChambreController implements ChambreApi {
     @Override
     public Page<ChambreDto> findAllByPavillon(Long pavillon, int page, int size) {
         return chambreService.findAllByPavillon(pavillon, page, size);
+    }
+
+    @Override
+    public List<ChambreDto> findAllByPeriodAndResidence(Long residence, Date debut, Date fin) {
+        return chambreService.findAllByPeriodAndResidence(residence, debut, fin);
     }
 }

@@ -4,7 +4,9 @@ import com.touba.backend.dto.ChambreDto;
 import com.touba.backend.exception.EntityInvalidException;
 import com.touba.backend.exception.EntityNotFoundException;
 import com.touba.backend.model.Chambre;
+import com.touba.backend.model.Reservation;
 import com.touba.backend.repository.ChambreRepository;
+import com.touba.backend.repository.ReservationRepository;
 import com.touba.backend.service.ChambreService;
 import com.touba.backend.validator.ChambreValidator;
 import jakarta.persistence.Entity;
@@ -15,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -24,6 +28,9 @@ public class ChambreServiceImpl implements ChambreService {
 
     @Autowired
     private ChambreRepository chambreRepository;
+
+    @Autowired
+    private ReservationRepository reservationRepository;
 
     @Override
     public ChambreDto save(ChambreDto dto) {
@@ -64,5 +71,27 @@ public class ChambreServiceImpl implements ChambreService {
         }
         Pageable pageable = PageRequest.of(page, size, Sort.by("numero"));
         return chambreRepository.findAllByPavillon(pavillon, pageable).map(ChambreDto::fromEntity);
+    }
+
+    @Override
+    public List<ChambreDto> findAllByPeriodAndResidence(Long residence, Date debut, Date fin) {
+        List<ChambreDto> chambresReservees = reservationRepository.findAllByPeriodAndResidence(debut, fin, residence);
+        List<Long> idIndisponibles = chambresReservees.stream()
+                .filter(c -> c.getNombrePlace() <= c.getPlaceReservee())
+                .map(
+                        ChambreDto::getId
+                ).toList();
+        if (idIndisponibles.isEmpty()) {
+            idIndisponibles = new ArrayList<>(List.of(0L));
+        }
+        return chambreRepository.findAllByResidenceAvailable(residence, idIndisponibles)
+                .stream().map(ChambreDto::fromEntity)
+                .peek(c -> {
+                    List<ChambreDto> c1 = chambresReservees.stream().filter(ch -> ch.getId().equals(c.getId())).toList();
+                    if (!c1.isEmpty()) {
+                        c.setPlaceReservee(c1.get(0).getPlaceReservee());
+                    }
+                })
+                .collect(Collectors.toList());
     }
 }
