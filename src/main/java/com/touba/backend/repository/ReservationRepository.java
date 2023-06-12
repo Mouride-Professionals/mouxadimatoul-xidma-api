@@ -22,4 +22,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     )
     List<ChambreDto> findAllByPeriodAndResidence(Date debut, Date fin, Long residence);
 
+    @Query(
+            "SELECT r FROM Reservation r WHERE r.chambre.pavillon.id = :pavillon " +
+            "AND ((r.dateEntree BETWEEN :debut AND :fin) OR (r.dateSortie BETWEEN :debut AND :fin)) "
+    )
+    List<Reservation> findAllByPeriodeAndPavillon(Date debut, Date fin, Long pavillon);
+
 }

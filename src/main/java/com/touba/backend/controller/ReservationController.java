@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -20,5 +21,10 @@ public class ReservationController implements ReservationApi {
     @Override
     public List<ReservationDto> save(ReservationRequestBody request) {
         return reservationService.save(request);
+    }
+
+    @Override
+    public List<ReservationDto> findByPeriodAndPavillon(Date debut, Date fin, Long pavillon) {
+        return reservationService.findByPeriodAndPavillon(debut, fin, pavillon);
     }
 }

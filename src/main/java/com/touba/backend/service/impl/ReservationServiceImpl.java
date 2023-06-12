@@ -66,7 +66,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<ReservationDto> findByPeriod(Date debut, Date fin) {
-        return null;
+    public List<ReservationDto> findByPeriodAndPavillon(Date debut, Date fin, Long pavillon) {
+        return reservationRepository.findAllByPeriodeAndPavillon(debut, fin, pavillon).stream().map(ReservationDto::fromEntity).collect(Collectors.toList());
     }
 }

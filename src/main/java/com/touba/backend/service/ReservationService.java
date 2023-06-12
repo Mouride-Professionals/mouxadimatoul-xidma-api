@@ -12,6 +12,6 @@ public interface ReservationService {
 
     ReservationDto findById(Long id);
 
-    List<ReservationDto> findByPeriod(Date debut, Date fin);
+    List<ReservationDto> findByPeriodAndPavillon(Date debut, Date fin, Long pavillon);
 
 }
