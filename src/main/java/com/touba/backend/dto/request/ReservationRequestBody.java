@@ -17,4 +17,6 @@ public class ReservationRequestBody {
 
     private List<InviteRequest> invites;
 
+    private DelegationRequest delegation;
+
 }
