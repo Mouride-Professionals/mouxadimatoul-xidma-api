@@ -11,24 +11,16 @@ import java.util.Date;
 public class ReservationDto {
 
     private Long id;
-
     private Date createdAt;
-
     private Date updatedAt;
-
     private Date dateEntree;
-
     private Date dateSortie;
-
     private Date dateSortieProvisoire;
-
     private Boolean statut;
-
     private EvenementDto evenement;
-
     private ChambreDto chambre;
-
     private InviteDto invite;
+    private AccueillantDto accueillant;
 
     public static ReservationDto fromEntity(Reservation reservation) {
         if (reservation == null) {
@@ -45,6 +37,7 @@ public class ReservationDto {
                 .evenement(EvenementDto.fromEntity(reservation.getEvenement()))
                 .chambre(ChambreDto.fromEntity(reservation.getChambre()))
                 .invite(InviteDto.fromEntity(reservation.getInvite()))
+                .accueillant(AccueillantDto.fromEntity(reservation.getAccueillant()))
                 .build();
     }
 
@@ -63,6 +56,7 @@ public class ReservationDto {
         reservation.setEvenement(EvenementDto.toEntity(dto.getEvenement()));
         reservation.setChambre(ChambreDto.toEntity(dto.getChambre()));
         reservation.setInvite(InviteDto.toEntity(dto.getInvite()));
+        reservation.setAccueillant(AccueillantDto.toEntity(dto.getAccueillant()));
         return reservation;
     }
 

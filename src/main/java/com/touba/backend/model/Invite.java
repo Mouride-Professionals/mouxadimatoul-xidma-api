@@ -2,6 +2,7 @@ package com.touba.backend.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +23,7 @@ public class Invite extends AbstractModel{
     @Column(length = 20)
     private String nom;
 
-    @Column(length = 15)
+    @Column(length = 15, unique = true)
     private String telephone;
 
     @Column(length = 90)
@@ -30,6 +31,11 @@ public class Invite extends AbstractModel{
 
     @Column(length = 90)
     private String email;
+
+    private Boolean estResponsable;
+
+    @ManyToOne()
+    private Delegation delegation;
 
     @OneToMany(mappedBy = "invite")
     private List<Reservation> reservations = new ArrayList<>();

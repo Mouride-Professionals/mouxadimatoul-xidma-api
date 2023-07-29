@@ -5,6 +5,7 @@ import com.touba.backend.dto.ReservationDto;
 import com.touba.backend.dto.request.ReservationRequestBody;
 import com.touba.backend.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,5 +27,10 @@ public class ReservationController implements ReservationApi {
     @Override
     public List<ReservationDto> findByPeriodAndPavillon(Date debut, Date fin, Long pavillon) {
         return reservationService.findByPeriodAndPavillon(debut, fin, pavillon);
+    }
+
+    @Override
+    public Page<ReservationDto> findAll(int page, int size) {
+        return reservationService.findAll(page, size);
     }
 }

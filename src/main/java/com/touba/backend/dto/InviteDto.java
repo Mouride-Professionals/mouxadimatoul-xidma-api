@@ -23,6 +23,10 @@ public class InviteDto {
 
     private String email;
 
+    private Boolean estResponsable;
+
+    private DelegationDto delegation;
+
     private List<ReservationDto> reservations;
 
     public static InviteDto fromEntity(Invite invite) {
@@ -36,6 +40,11 @@ public class InviteDto {
                 .telephone(invite.getTelephone())
                 .adresse(invite.getAdresse())
                 .email(invite.getEmail())
+                .estResponsable(invite.getEstResponsable())
+                .delegation(invite.getDelegation() == null ? null : DelegationDto.builder()
+                        .id(invite.getDelegation().getId())
+                        .nom(invite.getDelegation().getNom())
+                        .build())
                 .build();
     }
 
@@ -50,6 +59,7 @@ public class InviteDto {
         invite.setTelephone(dto.getTelephone());
         invite.setAdresse(dto.getAdresse());
         invite.setEmail(dto.getEmail());
+        invite.setEstResponsable(dto.getEstResponsable());
         return invite;
     }
 

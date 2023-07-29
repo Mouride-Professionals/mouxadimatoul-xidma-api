@@ -26,6 +26,9 @@ public class Residence extends AbstractModel{
 
     private Boolean archive;
 
+    @OneToMany(mappedBy = "residence", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Set<Accueillant> accueillants;
+
     @OneToOne(cascade = CascadeType.ALL)
     private Ressource image;
 

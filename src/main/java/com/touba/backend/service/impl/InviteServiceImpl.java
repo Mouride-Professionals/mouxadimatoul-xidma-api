@@ -1,5 +1,7 @@
 package com.touba.backend.service.impl;
 
+import com.touba.backend.dto.InviteDto;
+import com.touba.backend.exception.EntityNotFoundException;
 import com.touba.backend.repository.InviteRepository;
 import com.touba.backend.service.InviteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,4 +13,12 @@ public class InviteServiceImpl implements InviteService {
     @Autowired
     private InviteRepository inviteRepository;
 
+    @Override
+    public InviteDto findByTelephone(String telephone) {
+        return InviteDto.fromEntity(
+                inviteRepository.findByTelephone(telephone).orElseThrow(
+                        () -> new EntityNotFoundException("Pas d'invité avec ce numéro")
+                )
+        );
+    }
 }

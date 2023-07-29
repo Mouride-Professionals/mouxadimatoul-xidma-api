@@ -15,22 +15,15 @@ import java.util.stream.Collectors;
 public class ResidenceDto {
 
     private Long id;
-
     private String libelle;
-
     private String description;
-
     private String adresse;
-
     private String telephoneResidence;
-
     private Boolean archive;
-
     private RessourceDto image;
-
     private UtilisateurDto responsable;
-
     private List<PavillonDto> pavillons;
+    private Set<AccueillantDto> accueillants;
 
     public static ResidenceDto fromEntity(Residence residence) {
         if (residence == null) {

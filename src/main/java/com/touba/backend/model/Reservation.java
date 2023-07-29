@@ -32,4 +32,7 @@ public class Reservation extends AbstractModel{
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private Invite invite;
 
+    @ManyToOne()
+    private Accueillant accueillant;
+
 }

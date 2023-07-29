@@ -12,6 +12,10 @@ import com.touba.backend.repository.ReservationRepository;
 import com.touba.backend.service.ReservationService;
 import com.touba.backend.validator.ReservationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -68,5 +72,11 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<ReservationDto> findByPeriodAndPavillon(Date debut, Date fin, Long pavillon) {
         return reservationRepository.findAllByPeriodeAndPavillon(debut, fin, pavillon).stream().map(ReservationDto::fromEntity).collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<ReservationDto> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size).withSort(Sort.by("dateEntree").ascending());
+        return reservationRepository.findAll(pageable).map(ReservationDto::fromEntity);
     }
 }
