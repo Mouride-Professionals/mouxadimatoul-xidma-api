@@ -1,16 +1,16 @@
 package com.touba.backend.service.impl;
 
+import com.touba.backend.dto.AccueillantDto;
 import com.touba.backend.dto.ChambreDto;
-import com.touba.backend.dto.InviteDto;
 import com.touba.backend.dto.ReservationDto;
 import com.touba.backend.dto.request.ReservationRequestBody;
 import com.touba.backend.exception.EntityInvalidException;
-import com.touba.backend.model.Invite;
 import com.touba.backend.model.Reservation;
 import com.touba.backend.repository.InviteRepository;
 import com.touba.backend.repository.ReservationRepository;
 import com.touba.backend.service.ReservationService;
 import com.touba.backend.validator.ReservationValidator;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +33,7 @@ public class ReservationServiceImpl implements ReservationService {
     private InviteRepository inviteRepository;
 
     @Override
+    @Transactional
     public List<ReservationDto> save(ReservationRequestBody request) {
         List<String> errors = ReservationValidator.validateBody(request);
         if (!errors.isEmpty()) {
@@ -45,18 +46,12 @@ public class ReservationServiceImpl implements ReservationService {
             reservation.setDateSortie(request.getPeriod().getSortie());
             reservation.setDateSortieProvisoire(request.getPeriod().getSortie());
             reservation.setEvenement(request.getEvenement());
+            reservation.setAccueillant(AccueillantDto.toEntity(inv.getAccueillant()));
+            reservation.setPresence(inv.getPresence());
             reservation.setChambre(ChambreDto.toEntity(inv.getChambre()));
             reservation.setInvite(
                     inviteRepository.findByTelephone(inv.getTelephone()).orElse(
-                            InviteDto.toEntity(
-                                    InviteDto.builder()
-                                            .prenom(inv.getPrenom())
-                                            .nom(inv.getNom())
-                                            .telephone(inv.getTelephone())
-                                            .email(inv.getEmail())
-                                            .adresse(inv.getAdresse())
-                                            .build()
-                            )
+                            null
                     )
             );
             reservations.add(reservation);
@@ -75,8 +70,9 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Page<ReservationDto> findAll(int page, int size) {
+    public Page<ReservationDto> findAll(int page, int size, int year, Long event, int presence) {
         Pageable pageable = PageRequest.of(page, size).withSort(Sort.by("dateEntree").ascending());
-        return reservationRepository.findAll(pageable).map(ReservationDto::fromEntity);
+        System.out.println(presence);
+        return reservationRepository.findAll(pageable, year, event, presence).map(ReservationDto::fromEntity);
     }
 }

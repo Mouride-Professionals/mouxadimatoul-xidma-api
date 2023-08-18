@@ -24,7 +24,10 @@ public interface ReservationApi {
     @GetMapping()
     Page<ReservationDto> findAll(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(defaultValue = "-1") int year,
+            @RequestParam(defaultValue = "-1") Long event,
+            int presence
     );
 
 }

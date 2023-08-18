@@ -16,7 +16,6 @@ public class ResidenceDto {
 
     private Long id;
     private String libelle;
-    private String description;
     private String adresse;
     private String telephoneResidence;
     private Boolean archive;
@@ -32,7 +31,6 @@ public class ResidenceDto {
         return ResidenceDto.builder()
                 .id(residence.getId())
                 .libelle(residence.getLibelle())
-                .description(residence.getDescription())
                 .adresse(residence.getAdresse())
                 .telephoneResidence(residence.getTelephoneResidence())
                 .image(RessourceDto.fromEntity(residence.getImage()))
@@ -48,7 +46,6 @@ public class ResidenceDto {
         Residence residence = new Residence();
         residence.setId(dto.getId());
         residence.setLibelle(dto.getLibelle());
-        residence.setDescription(dto.getDescription());
         residence.setAdresse(dto.getAdresse());
         residence.setTelephoneResidence(dto.getTelephoneResidence());
         residence.setImage(RessourceDto.toEntity(dto.getImage()));

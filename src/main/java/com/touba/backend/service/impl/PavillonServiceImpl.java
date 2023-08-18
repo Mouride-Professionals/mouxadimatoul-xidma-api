@@ -10,6 +10,7 @@ import com.touba.backend.validator.PavillonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +29,11 @@ public class PavillonServiceImpl implements PavillonService {
         Pavillon pavillon =PavillonDto.toEntity(dto);
         pavillon.getChambres().forEach(c -> {
             c.setPavillon(pavillon);
+            c.setReference(
+                Arrays.stream(c.getPavillon().getLibelle().split(" "))
+                        .map(word -> word.charAt(0))
+                        .toString() + "-" + c.getNiveau().toString() + c.getNumero()
+            );
         });
         return PavillonDto.fromEntity(pavillonRepository.save(pavillon));
     }

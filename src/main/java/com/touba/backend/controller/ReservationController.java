@@ -30,7 +30,7 @@ public class ReservationController implements ReservationApi {
     }
 
     @Override
-    public Page<ReservationDto> findAll(int page, int size) {
-        return reservationService.findAll(page, size);
+    public Page<ReservationDto> findAll(int page, int size, int year, Long event, int presence) {
+        return reservationService.findAll(page, size, year, event, presence);
     }
 }

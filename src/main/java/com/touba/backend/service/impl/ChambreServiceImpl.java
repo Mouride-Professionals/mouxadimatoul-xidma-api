@@ -17,10 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,7 +36,11 @@ public class ChambreServiceImpl implements ChambreService {
             throw new EntityInvalidException("La chambre est invalide", errors);
         }
         Chambre chambre = ChambreDto.toEntity(dto);
-        chambre.setReference(UUID.randomUUID().toString().substring(0, 10));
+        chambre.setReference(
+                Arrays.stream(dto.getPavillon().getLibelle().split(" "))
+                        .map(word -> word.charAt(0))
+                        .toString() + "-" + dto.getNiveau().toString() + dto.getNumero()
+        );
         return ChambreDto.fromEntity(chambreRepository.save(chambre));
     }
 

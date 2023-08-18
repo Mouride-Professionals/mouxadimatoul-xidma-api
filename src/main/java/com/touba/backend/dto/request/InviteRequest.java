@@ -1,5 +1,6 @@
 package com.touba.backend.dto.request;
 
+import com.touba.backend.dto.AccueillantDto;
 import com.touba.backend.dto.ChambreDto;
 import lombok.Data;
 
@@ -12,5 +13,7 @@ public class InviteRequest {
     private String adresse;
     private String email;
     private ChambreDto chambre;
+    private AccueillantDto accueillant;
+    private Boolean presence;
 
 }

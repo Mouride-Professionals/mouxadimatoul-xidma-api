@@ -1,16 +1,15 @@
 package com.touba.backend.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,7 +24,7 @@ public class Pavillon extends AbstractModel{
     @ManyToOne
     private Residence residence;
 
-    @OneToMany(mappedBy = "pavillon", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pavillon", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Chambre> chambres = new ArrayList<>();
 
 }

@@ -13,8 +13,6 @@ public class ResidenceRequest {
 
     private String libelle;
 
-    private String description;
-
     private String adresse;
 
     private String telephoneResidence;
@@ -30,7 +28,6 @@ public class ResidenceRequest {
         Residence residence = new Residence();
         residence.setId(request.getId());
         residence.setLibelle(request.getLibelle());
-        residence.setDescription(request.getDescription());
         residence.setAdresse(request.getAdresse());
         residence.setTelephoneResidence(request.getTelephoneResidence());
         return residence;

@@ -15,6 +15,6 @@ public interface ReservationService {
 
     List<ReservationDto> findByPeriodAndPavillon(Date debut, Date fin, Long pavillon);
 
-    Page<ReservationDto> findAll(int page, int size);
+    Page<ReservationDto> findAll(int page, int size, int year, Long event, int presence);
 
 }
