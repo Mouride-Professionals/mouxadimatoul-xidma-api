@@ -33,8 +33,17 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     @Query(
             "SELECT r FROM Reservation r WHERE (r.evenement.id = :event OR -1 = :event) " +
+            "AND (r.chambre.pavillon.residence.id = :residence OR -1 = :residence) " +
             "AND (YEAR(r.dateEntree) = :year OR YEAR(r.dateSortie) = :year OR -1 = :year) " +
             "AND (-1 = :presence OR (r.presence = true AND 1 = :presence))"
     )
-    Page<Reservation> findAll(Pageable pageable, int year, Long event, int presence);
+    Page<Reservation> findAll(Pageable pageable, int year, Long event, Long residence, int presence);
+
+    @Query(
+            "SELECT r FROM Reservation r WHERE (r.evenement.id = :event OR -1 = :event) " +
+            "AND (r.chambre.pavillon.residence.id = :residence OR -1 = :residence) " +
+            "AND (YEAR(r.dateEntree) = :year OR YEAR(r.dateSortie) = :year OR -1 = :year) " +
+            "AND (-1 = :presence OR (r.presence = true AND 1 = :presence))"
+    )
+    List<Reservation> findAll(int year, Long event, Long residence, int presence);
 }

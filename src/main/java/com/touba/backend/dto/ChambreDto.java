@@ -51,6 +51,7 @@ public class ChambreDto {
                 .pavillon(chambre.getPavillon() != null ? PavillonDto.builder()
                         .id(chambre.getPavillon().getId())
                         .libelle(chambre.getPavillon().getLibelle())
+                        .residence(ResidenceDto.builder().id(chambre.getPavillon().getResidence().getId()).build())
                         .build() : null)
                 .build();
     }
