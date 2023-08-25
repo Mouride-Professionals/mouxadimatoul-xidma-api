@@ -46,4 +46,14 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             "AND (-1 = :presence OR (r.presence = true AND 1 = :presence))"
     )
     List<Reservation> findAll(int year, Long event, Long residence, int presence);
+
+    @Query(
+            "SELECT COUNT(r) FROM Reservation r " +
+                    "WHERE r.chambre.pavillon.residence.id = :residence " +
+                    "GROUP BY r.invite.delegation.id"
+    )
+    Long countDelegationByResidence(Long residence);
+
+    @Query("SELECT COUNT(r) FROM Reservation r WHERE r.chambre.pavillon.residence.id = :residence")
+    Long countByResidence(Long residence);
 }
