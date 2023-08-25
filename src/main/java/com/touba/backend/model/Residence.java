@@ -26,6 +26,9 @@ public class Residence extends AbstractModel{
     @OneToMany(mappedBy = "residence", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Accueillant> accueillants;
 
+    @OneToMany(mappedBy = "residence", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Set<Responsable> responsables;
+
     @OneToOne(cascade = CascadeType.ALL)
     private Ressource image;
 

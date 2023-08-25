@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -29,4 +30,7 @@ public class Chambre extends AbstractModel{
 
     @OneToMany(mappedBy = "chambre")
     private List<Reservation> reservations = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "chambres")
+    private Set<Responsable> responsables;
 }

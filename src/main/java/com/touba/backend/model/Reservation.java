@@ -35,6 +35,9 @@ public class Reservation extends AbstractModel{
     @ManyToOne()
     private Accueillant accueillant;
 
+    @ManyToOne()
+    private Responsable responsable;
+
     private Boolean presence;
 
 }

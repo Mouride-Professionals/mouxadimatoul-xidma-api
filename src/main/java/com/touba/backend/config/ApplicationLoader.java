@@ -58,7 +58,8 @@ public class ApplicationLoader implements CommandLineRunner {
     private void loadRoles() {
         List<Role> roles = List.of(
                 new Role("admin"),
-                new Role("responsable")
+                new Role("responsable"),
+                new Role("accueillant")
         );
         roleRepository.saveAll(roles);
     }

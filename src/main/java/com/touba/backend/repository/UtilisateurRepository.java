@@ -14,6 +14,6 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> 
     @Query("SELECT u FROM Utilisateur u WHERE u.role.libelle LIKE %:role% AND " +
             "(lower(u.prenom) LIKE %:search% " +
             "OR lower(u.nom) LIKE %:search% " +
-            "OR u.telephone LIKE %:search%)")
+            "OR u.telephone LIKE %:search%) AND u.role.libelle <> 'accueillant'")
     Page<Utilisateur> findAllBySearch(Pageable pageable, String search, String role);
 }

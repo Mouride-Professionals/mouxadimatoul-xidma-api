@@ -10,9 +10,9 @@ public class UtilisateurValidator {
 
     public static List<String> validate(UtilisateurDto dto) {
         List<String> errors = new ArrayList<>();
-        if (dto.getRole() == null) {
-            errors.add("Le role est obligatoire");
-        }
+//        if (dto.getRole() == null) {
+//            errors.add("Le role est obligatoire");
+//        }
         if (!StringUtils.hasLength(dto.getPrenom())) {
             errors.add("Le prénom est obligatoire");
         }

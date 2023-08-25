@@ -31,7 +31,7 @@ public class FileReservationDto {
                 .delegation(reservation.getInvite().getDelegation() != null ? reservation.getInvite().getDelegation().getNom() : "")
                 .residence(reservation.getChambre().getPavillon().getResidence().getLibelle())
                 .chambre(reservation.getChambre().getReference())
-                .accueillant(reservation.getAccueillant().getNom())
+                .accueillant(reservation.getAccueillant().getUtilisateur().getPrenom() + " " +reservation.getAccueillant().getUtilisateur().getNom())
                 .dateEntree(dateFormatter.format(reservation.getDateEntree()))
                 .dateSortie(dateFormatter.format(reservation.getDateSortie()))
                 .presence(reservation.getPresence() ? "oui" : "non")

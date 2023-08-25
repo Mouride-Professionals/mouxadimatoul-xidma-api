@@ -21,6 +21,7 @@ public class ReservationDto {
     private ChambreDto chambre;
     private InviteDto invite;
     private AccueillantDto accueillant;
+    private ResponsableDto responsable;
     private Boolean presence;
 
     public static ReservationDto fromEntity(Reservation reservation) {
@@ -40,6 +41,7 @@ public class ReservationDto {
                 .invite(InviteDto.fromEntity(reservation.getInvite()))
                 .presence(reservation.getPresence())
                 .accueillant(AccueillantDto.fromEntity(reservation.getAccueillant()))
+                .responsable(ResponsableDto.fromEntity(reservation.getResponsable()))
                 .build();
     }
 
@@ -60,6 +62,7 @@ public class ReservationDto {
         reservation.setInvite(InviteDto.toEntity(dto.getInvite()));
         reservation.setPresence(dto.getPresence());
         reservation.setAccueillant(AccueillantDto.toEntity(dto.getAccueillant()));
+        reservation.setResponsable(ResponsableDto.toEntity(dto.getResponsable()));
         return reservation;
     }
 

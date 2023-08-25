@@ -11,8 +11,7 @@ import java.util.Set;
 public class AccueillantDto {
 
     private Long id;
-    private String nom;
-    private String telephone;
+    private UtilisateurDto utilisateur;
     private ResidenceDto residence;
     private Set<ReservationDto> reservations;
 
@@ -22,8 +21,7 @@ public class AccueillantDto {
         }
         return AccueillantDto.builder()
                 .id(accueillant.getId())
-                .nom(accueillant.getNom())
-                .telephone(accueillant.getTelephone())
+                .utilisateur(UtilisateurDto.fromEntity(accueillant.getUtilisateur()))
                 .residence(ResidenceDto.builder()
                         .id(accueillant.getResidence().getId())
                         .libelle(accueillant.getResidence().getLibelle())
@@ -37,8 +35,7 @@ public class AccueillantDto {
         }
         Accueillant accueillant = new Accueillant();
         accueillant.setId(dto.getId());
-        accueillant.setNom(dto.getNom());
-        accueillant.setTelephone(dto.getTelephone());
+        accueillant.setUtilisateur(UtilisateurDto.toEntity(dto.getUtilisateur()));
         accueillant.setResidence(ResidenceDto.toEntity(dto.getResidence()));
         return accueillant;
     }

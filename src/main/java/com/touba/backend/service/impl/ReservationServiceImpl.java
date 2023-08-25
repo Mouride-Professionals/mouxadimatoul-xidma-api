@@ -1,9 +1,6 @@
 package com.touba.backend.service.impl;
 
-import com.touba.backend.dto.AccueillantDto;
-import com.touba.backend.dto.ChambreDto;
-import com.touba.backend.dto.FileReservationDto;
-import com.touba.backend.dto.ReservationDto;
+import com.touba.backend.dto.*;
 import com.touba.backend.dto.request.ReservationRequestBody;
 import com.touba.backend.exception.EntityInvalidException;
 import com.touba.backend.exception.EntityNotFoundException;
@@ -52,6 +49,7 @@ public class ReservationServiceImpl implements ReservationService {
             reservation.setDateSortieProvisoire(request.getPeriod().getSortie());
             reservation.setEvenement(request.getEvenement());
             reservation.setAccueillant(AccueillantDto.toEntity(inv.getAccueillant()));
+            reservation.setResponsable(ResponsableDto.toEntity(inv.getResponsable()));
             reservation.setPresence(inv.getPresence());
             reservation.setChambre(ChambreDto.toEntity(inv.getChambre()));
             reservation.setInvite(
@@ -73,6 +71,7 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setDateSortie(dto.getDateSortie());
         reservation.setDateSortieProvisoire(dto.getDateSortie());
         reservation.setAccueillant(AccueillantDto.toEntity(dto.getAccueillant()));
+        reservation.setResponsable(ResponsableDto.toEntity(dto.getResponsable()));
         reservation.setChambre(ChambreDto.toEntity(dto.getChambre()));
         reservation.setPresence(dto.getPresence());
         return ReservationDto.fromEntity(reservationRepository.save(reservation));

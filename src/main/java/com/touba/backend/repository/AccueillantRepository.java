@@ -9,8 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 public interface AccueillantRepository extends JpaRepository<Accueillant, Long> {
     @Query(
             "SElECT a FROM Accueillant a WHERE (a.residence.id = :idRes OR -1 = :idRes) " +
-            "AND (lower(a.nom) LIKE %:search% " +
-            "OR a.telephone LIKE %:search%)"
+            "AND (lower(a.utilisateur.nom) LIKE %:search% OR lower(a.utilisateur.prenom) LIKE %:search% " +
+            "OR a.utilisateur.telephone LIKE %:search%)"
     )
     Page<Accueillant> findAllByParams(Pageable pageable, Long idRes, String search);
 }

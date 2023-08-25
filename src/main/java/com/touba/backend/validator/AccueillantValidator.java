@@ -9,13 +9,7 @@ import java.util.List;
 public class AccueillantValidator {
 
     public static List<String> validate(AccueillantDto dto) {
-        List<String> errors = new ArrayList<>();
-        if (!StringUtils.hasLength(dto.getNom())) {
-            errors.add("Le nom de l'accueillant est obligatoire");
-        }
-        if (!StringUtils.hasLength(dto.getTelephone())) {
-            errors.add("Le téléphone est obligatoire");
-        }
+        List<String> errors = UtilisateurValidator.validate(dto.getUtilisateur());
         if (dto.getResidence() == null) {
             errors.add("La résidence de l'accueillant est obligatoire");
         }

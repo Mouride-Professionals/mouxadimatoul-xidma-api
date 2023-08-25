@@ -1,8 +1,6 @@
 package com.touba.backend.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Set;
@@ -14,9 +12,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class Accueillant extends AbstractModel{
 
-    private String nom;
-
-    private String telephone;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Utilisateur utilisateur;
 
     @ManyToOne
     private Residence residence;
