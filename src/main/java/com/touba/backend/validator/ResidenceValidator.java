@@ -20,8 +20,14 @@ public class ResidenceValidator {
         if (!StringUtils.hasLength(req.getTelephoneResidence())) {
             errors.add("Le téléphone doit être obligatoire");
         }
-        if (!StringUtils.hasLength(req.getResponsable())) {
-            errors.add("Le responsable doit être obligatoire");
+        if (!StringUtils.hasLength(req.getNom())) {
+            errors.add("Le nom du responsable doit être obligatoire");
+        }
+        if (!StringUtils.hasLength(req.getPrenom())) {
+            errors.add("Le prénom du responsable doit être obligatoire");
+        }
+        if (!StringUtils.hasLength(req.getTelephone())) {
+            errors.add("Le téléphone responsable doit être obligatoire");
         }
         return errors;
     }

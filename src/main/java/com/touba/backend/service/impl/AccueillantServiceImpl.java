@@ -39,7 +39,7 @@ public class AccueillantServiceImpl implements AccueillantService {
         accueillant.getUtilisateur().setRole(role);
         accueillant.getUtilisateur().setPassword(new BCryptPasswordEncoder().encode("test"));
         return AccueillantDto.fromEntity(
-                accueillantRepository.save(AccueillantDto.toEntity(dto))
+                accueillantRepository.save(accueillant)
         );
     }
 
@@ -78,6 +78,13 @@ public class AccueillantServiceImpl implements AccueillantService {
     public Page<AccueillantDto> findAllByParams(int page, int size, Long idRes, String search) {
         Pageable pageable = PageRequest.of(page, size);
         return accueillantRepository.findAllByParams(pageable, idRes, search).map(AccueillantDto::fromEntity);
+    }
+
+    @Override
+    public AccueillantDto findByUsername(String username) {
+        return AccueillantDto.fromEntity(accueillantRepository.findByUsername(username).orElseThrow(
+                () -> new EntityNotFoundException("Pas d'accueillant avec cet ID")
+        ));
     }
 
     @Override

@@ -48,7 +48,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     List<Reservation> findAll(int year, Long event, Long residence, int presence);
 
     @Query(
-            "SELECT COUNT(r) FROM Reservation r " +
+            "SELECT COUNT(r.invite.delegation.id) FROM Reservation r " +
                     "WHERE r.chambre.pavillon.residence.id = :residence " +
                     "GROUP BY r.invite.delegation.id"
     )

@@ -31,21 +31,13 @@ public class ApplicationLoader implements CommandLineRunner {
             System.out.println("Load fixtures");
             loadRoles();
             utilisateurRepository.saveAll(List.of(new Utilisateur(
-                    "776543212",
+                    "777197482",
                     new BCryptPasswordEncoder().encode("admin"),
                     roleRepository.findByLibelle("admin").orElseThrow(),
                     true,
-                    "Cheikh",
-                    "Sow",
-                    "777899876"
-            ), new Utilisateur(
-                    "778900987",
-                    new BCryptPasswordEncoder().encode("responsable"),
-                    roleRepository.findByLibelle("responsable").orElseThrow(),
-                    true,
-                    "Papa Djiby",
-                    "Niang",
-                    "778900987"
+                    "Admin",
+                    "Admin",
+                    "777197482"
             )));
             evenementRepository.saveAll(List.of(
                     new Evenement("Magal de Touba"),

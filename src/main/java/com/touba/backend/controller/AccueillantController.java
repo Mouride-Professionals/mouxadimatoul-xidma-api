@@ -24,6 +24,11 @@ public class AccueillantController implements AccueillantApi {
     }
 
     @Override
+    public AccueillantDto findByUsername(String username) {
+        return accueillantService.findByUsername(username);
+    }
+
+    @Override
     public AccueillantDto findById(Long id) {
         return accueillantService.findById(id);
     }

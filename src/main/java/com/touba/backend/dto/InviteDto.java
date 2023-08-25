@@ -1,5 +1,6 @@
 package com.touba.backend.dto;
 
+import com.touba.backend.model.Delegation;
 import com.touba.backend.model.Invite;
 import lombok.Builder;
 import lombok.Data;
@@ -60,6 +61,9 @@ public class InviteDto {
         invite.setAdresse(dto.getAdresse());
         invite.setEmail(dto.getEmail());
         invite.setEstResponsable(dto.getEstResponsable());
+        Delegation delegation = new Delegation();
+        delegation.setId(dto.getDelegation().getId());
+        invite.setDelegation(delegation);
         return invite;
     }
 

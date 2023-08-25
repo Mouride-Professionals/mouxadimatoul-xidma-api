@@ -17,9 +17,13 @@ public class ResidenceRequest {
 
     private String telephoneResidence;
 
-    private MultipartFile image;
+    private String telephone;
 
-    private String responsable;
+    private String prenom;
+
+    private String nom;
+
+    private MultipartFile image;
 
     public static Residence toEntity(ResidenceRequest request) {
         if (request == null) {

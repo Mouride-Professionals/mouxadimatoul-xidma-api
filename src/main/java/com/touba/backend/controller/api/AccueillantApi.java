@@ -16,6 +16,9 @@ public interface AccueillantApi {
     @PutMapping
     AccueillantDto update(@RequestBody AccueillantDto dto);
 
+    @GetMapping("/user/{username}")
+    AccueillantDto findByUsername(@PathVariable String username);
+
     @GetMapping("/{id}")
     AccueillantDto findById(@PathVariable Long id);
 

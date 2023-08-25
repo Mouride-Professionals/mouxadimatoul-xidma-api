@@ -13,6 +13,8 @@ public interface AccueillantService {
 
     Page<AccueillantDto> findAllByParams(int page, int size, Long idRes, String search);
 
+    AccueillantDto findByUsername(String username);
+
     void delete(Long id);
 
 }

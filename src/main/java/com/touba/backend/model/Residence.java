@@ -32,7 +32,7 @@ public class Residence extends AbstractModel{
     @OneToOne(cascade = CascadeType.ALL)
     private Ressource image;
 
-    @OneToOne()
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Utilisateur responsable;
 
     @OneToMany(mappedBy = "residence", fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
