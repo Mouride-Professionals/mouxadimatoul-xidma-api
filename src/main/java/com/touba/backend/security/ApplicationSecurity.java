@@ -39,7 +39,7 @@ public class ApplicationSecurity {
                     CorsConfiguration configuration = new CorsConfiguration();
                      configuration.setAllowedOrigins(List.of(
                              "http://localhost:4200",
-                             "http://192.168.1.130:4200"
+                             "http://109.123.246.253:5400"
                      ));
                     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
                     configuration.setAllowedHeaders(List.of("*"));
