@@ -25,7 +25,7 @@ public class DelegationDto {
         if (delegation == null) {
             return null;
         }
-        Optional<Invite> chef = delegation.getInvites().stream().filter(Invite::getEstResponsable).findFirst();
+        Optional<Invite> chef = delegation.getInvites().stream().filter(inv -> inv.getEstResponsable() != null && inv.getEstResponsable()).findFirst();
         List<Invite> others = delegation.getInvites().stream().filter(inv ->  inv.getEstResponsable() == null || !inv.getEstResponsable()).toList();
         return DelegationDto.builder()
                 .id(delegation.getId())

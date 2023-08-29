@@ -5,7 +5,6 @@ import com.touba.backend.model.Invite;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -62,7 +61,7 @@ public class InviteDto {
         invite.setEmail(dto.getEmail());
         invite.setEstResponsable(dto.getEstResponsable());
         Delegation delegation = new Delegation();
-        delegation.setId(dto.getDelegation().getId());
+        delegation.setId(dto.getDelegation() != null ? dto.getDelegation().getId(): null);
         invite.setDelegation(delegation);
         return invite;
     }
