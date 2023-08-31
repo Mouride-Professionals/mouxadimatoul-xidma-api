@@ -19,6 +19,11 @@ public class DelegationController implements DelegationApi {
     }
 
     @Override
+    public DelegationDto update(DelegationDto dto) {
+        return delegationService.update(dto);
+    }
+
+    @Override
     public DelegationDto findById(Long id) {
         return delegationService.findById(id);
     }

@@ -44,6 +44,7 @@ public class InviteDto {
                 .delegation(invite.getDelegation() == null ? null : DelegationDto.builder()
                         .id(invite.getDelegation().getId())
                         .nom(invite.getDelegation().getNom())
+                        .nombre(invite.getDelegation().getNombre())
                         .build())
                 .build();
     }

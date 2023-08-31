@@ -32,6 +32,20 @@ public class DelegationServiceImpl implements DelegationService {
     }
 
     @Override
+    public DelegationDto update(DelegationDto dto) {
+        List<String> errors = DelegationValidator.validate(dto);
+        if (!errors.isEmpty()) {
+            throw new EntityInvalidException("La délégation est invalide", errors);
+        }
+        Delegation delegation = delegationRepository.findById(dto.getId()).orElseThrow(
+                () -> new EntityNotFoundException("Pas de délégation avec cet ID")
+        );
+        delegation.setNom(dto.getNom());
+        delegation.setNombre(dto.getNombre());
+        return DelegationDto.fromEntity(delegationRepository.save(delegation));
+    }
+
+    @Override
     public DelegationDto findById(Long id) {
         return DelegationDto.fromEntity(
                 delegationRepository.findById(id).orElseThrow(

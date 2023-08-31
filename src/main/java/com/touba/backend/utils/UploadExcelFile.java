@@ -27,6 +27,7 @@ public class UploadExcelFile {
         writeHeader("reservation", List.of(
                 "Invité",
                 "Délégation",
+                "Nbr personnes",
                 "Résidence",
                 "Chambre",
                 "Accueillant",
@@ -81,6 +82,7 @@ public class UploadExcelFile {
             int columnCount = 0;
             createCell(row, columnCount++, record.getInvite(), style);
             createCell(row, columnCount++, record.getDelegation(), style);
+            createCell(row, columnCount++, record.getNombre(), style);
             createCell(row, columnCount++, record.getResidence(), style);
             createCell(row, columnCount++, record.getChambre(), style);
             createCell(row, columnCount++, record.getAccueillant(), style);

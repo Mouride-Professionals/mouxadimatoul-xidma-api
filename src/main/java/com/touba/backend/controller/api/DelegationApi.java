@@ -12,6 +12,9 @@ public interface DelegationApi {
     @PostMapping()
     DelegationDto save(@RequestBody DelegationDto dto);
 
+    @PutMapping()
+    DelegationDto update(@RequestBody DelegationDto dto);
+
     @GetMapping("/{id}")
     DelegationDto findById(@PathVariable Long id);
 

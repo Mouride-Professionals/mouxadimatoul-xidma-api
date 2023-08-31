@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 public class FileReservationDto {
     private String invite;
     private String delegation;
+    private Integer nombre;
     private String residence;
     private String chambre;
     private String accueillant;
@@ -29,6 +30,7 @@ public class FileReservationDto {
         return FileReservationDto.builder()
                 .invite(reservation.getInvite().getPrenom() + " " + reservation.getInvite().getNom().toUpperCase())
                 .delegation(reservation.getInvite().getDelegation() != null ? reservation.getInvite().getDelegation().getNom() : "")
+                .nombre(reservation.getInvite().getDelegation() != null ? reservation.getInvite().getDelegation().getNombre() : 0)
                 .residence(reservation.getChambre().getPavillon().getResidence().getLibelle())
                 .chambre(reservation.getChambre().getReference())
                 .accueillant(reservation.getAccueillant().getUtilisateur().getPrenom() + " " +reservation.getAccueillant().getUtilisateur().getNom())

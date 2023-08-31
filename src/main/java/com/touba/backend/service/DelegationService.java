@@ -7,6 +7,8 @@ public interface DelegationService {
 
     DelegationDto save(DelegationDto dto);
 
+    DelegationDto update(DelegationDto dto);
+
     DelegationDto findById(Long id);
 
     Page<DelegationDto> findAll(int page, int size);
