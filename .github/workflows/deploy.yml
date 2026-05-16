@@ -1,0 +1,56 @@
+name: Deploy API
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  REGISTRY: registry.digitalocean.com/africadex-registry
+  IMAGE_NAME: mouxadimatoul-xidma-api
+  APP_DIR: /opt/khidma
+  DROPLET_HOST: ${{ secrets.DROPLET_HOST }}
+  DROPLET_SSH_PRIVATE_KEY: ${{ secrets.DROPLET_SSH_PRIVATE_KEY }}
+
+jobs:
+  deploy:
+    name: Build, push, and restart API
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      - name: Build jar
+        run: ./mvnw -DskipTests package
+
+      - name: Log in to DigitalOcean Container Registry
+        run: echo "${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}" | docker login registry.digitalocean.com -u "${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}" --password-stdin
+
+      - name: Build image
+        run: docker build -t "$REGISTRY/$IMAGE_NAME:latest" .
+
+      - name: Push image
+        run: docker push "$REGISTRY/$IMAGE_NAME:latest"
+
+      - name: Configure SSH
+        if: env.DROPLET_HOST != '' && env.DROPLET_SSH_PRIVATE_KEY != ''
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$DROPLET_SSH_PRIVATE_KEY" > ~/.ssh/khidma_deploy_key
+          chmod 600 ~/.ssh/khidma_deploy_key
+          ssh-keyscan -H "$DROPLET_HOST" >> ~/.ssh/known_hosts
+
+      - name: Restart API on droplet
+        if: env.DROPLET_HOST != '' && env.DROPLET_SSH_PRIVATE_KEY != ''
+        run: |
+          ssh -i ~/.ssh/khidma_deploy_key root@"$DROPLET_HOST" \
+            "cd $APP_DIR && docker compose pull api && docker compose up -d api && docker image prune -f"
