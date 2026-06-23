@@ -21,7 +21,7 @@ public interface ReservationService {
 
     Page<ReservationDto> findAll(int page, int size, int year, Long event, Long residence, int presence);
 
-    void exportExcelFile(HttpServletResponse response, Long residence, int year, Long event, int presence) throws IOException;
+    void exportExcelFile(HttpServletResponse response, Long residence, int year, Long event, int presence, String locale) throws IOException;
 
     void delete(Long id);
 }

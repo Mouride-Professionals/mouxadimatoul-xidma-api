@@ -1,9 +1,11 @@
 package com.touba.backend.service.impl;
 
+import com.example.authjwt.dto.ValidationErrorDto;
 import com.touba.backend.dto.*;
 import com.touba.backend.dto.request.ReservationRequestBody;
 import com.touba.backend.exception.EntityInvalidException;
 import com.touba.backend.exception.EntityNotFoundException;
+import com.touba.backend.exception.ErrorCode;
 import com.touba.backend.model.Reservation;
 import com.touba.backend.repository.InviteRepository;
 import com.touba.backend.repository.ReservationRepository;
@@ -37,9 +39,9 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     @Transactional
     public List<ReservationDto> save(ReservationRequestBody request) {
-        List<String> errors = ReservationValidator.validateBody(request);
+        List<ValidationErrorDto> errors = ReservationValidator.validateBody(request);
         if (!errors.isEmpty()) {
-            throw new EntityInvalidException("Le formulaire de réservation est invalid", errors);
+            throw new EntityInvalidException(ErrorCode.VALIDATION_RESERVATION_INVALID, ErrorCode.VALIDATION_RESERVATION_INVALID, errors);
         }
         List<Reservation> reservations = new ArrayList<>();
         request.getInvites().forEach(inv -> {
@@ -65,7 +67,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public ReservationDto update(ReservationDto dto) {
         Reservation reservation = reservationRepository.findById(dto.getId()).orElseThrow(
-                () -> new EntityNotFoundException("Pas de reservation avec cet ID")
+                () -> new EntityNotFoundException(ErrorCode.RESERVATION_NOT_FOUND, ErrorCode.RESERVATION_NOT_FOUND)
         );
         reservation.setDateEntree(dto.getDateEntree());
         reservation.setDateSortie(dto.getDateSortie());
@@ -82,7 +84,7 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationRepository.findById(id)
                 .map(ReservationDto::fromEntity)
                 .orElseThrow(
-                        () -> new EntityNotFoundException("Pas réservation avec cet ID")
+                        () -> new EntityNotFoundException(ErrorCode.RESERVATION_NOT_FOUND, ErrorCode.RESERVATION_NOT_FOUND)
                 );
     }
 
@@ -98,7 +100,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public void exportExcelFile(HttpServletResponse response, Long residence, int year, Long event, int presence) throws IOException {
+    public void exportExcelFile(HttpServletResponse response, Long residence, int year, Long event, int presence, String locale) throws IOException {
         List<Reservation> reservations = reservationRepository.findAll(year, event, residence, presence);
         response.setContentType("application/octet-stream");
         if (!reservations.isEmpty()) {
@@ -107,14 +109,17 @@ public class ReservationServiceImpl implements ReservationService {
             response.setHeader(headerKey, headerValue);
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
-            UploadExcelFile excelFile = new UploadExcelFile(reservations.stream().map(FileReservationDto::mapToFile).collect(Collectors.toList()));
+            UploadExcelFile excelFile = new UploadExcelFile(
+                    reservations.stream().map(reservation -> FileReservationDto.mapToFile(reservation, locale)).collect(Collectors.toList()),
+                    locale
+            );
             excelFile.generateExcelFile(response);
         }
     }
 
     @Override
     public void delete(Long id) {
-        Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Pas de réservation avec cet ID"));
+        Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(ErrorCode.RESERVATION_NOT_FOUND, ErrorCode.RESERVATION_NOT_FOUND));
         reservationRepository.delete(reservation);
     }
 }

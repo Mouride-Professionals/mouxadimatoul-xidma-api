@@ -1,8 +1,10 @@
 package com.touba.backend.service.impl;
 
+import com.example.authjwt.dto.ValidationErrorDto;
 import com.touba.backend.dto.ResponsableDto;
 import com.touba.backend.exception.EntityInvalidException;
 import com.touba.backend.exception.EntityNotFoundException;
+import com.touba.backend.exception.ErrorCode;
 import com.touba.backend.model.Responsable;
 import com.touba.backend.repository.ResponsableRepository;
 import com.touba.backend.service.ResponsableService;
@@ -22,9 +24,9 @@ public class ResponsableServiceImpl implements ResponsableService {
 
     @Override
     public ResponsableDto save(ResponsableDto dto) {
-        List<String> errors = ResponsableValidator.validate(dto);
+        List<ValidationErrorDto> errors = ResponsableValidator.validate(dto);
         if (!errors.isEmpty()) {
-            throw new EntityInvalidException("Responsable invalid", errors);
+            throw new EntityInvalidException(ErrorCode.VALIDATION_RESPONSABLE_INVALID, ErrorCode.VALIDATION_RESPONSABLE_INVALID, errors);
         }
         return ResponsableDto.fromEntity(responsableRepository.save(ResponsableDto.toEntity(dto)));
     }
@@ -33,7 +35,7 @@ public class ResponsableServiceImpl implements ResponsableService {
     public ResponsableDto findById(Long id) {
         return ResponsableDto.fromEntity(
                 responsableRepository.findById(id).orElseThrow(() ->
-                        new EntityNotFoundException("Pas de responsable pour cet ID"))
+                        new EntityNotFoundException(ErrorCode.RESPONSABLE_NOT_FOUND, ErrorCode.RESPONSABLE_NOT_FOUND))
         );
     }
 
@@ -46,7 +48,7 @@ public class ResponsableServiceImpl implements ResponsableService {
     @Override
     public void delete(Long id) {
         Responsable responsable = responsableRepository.findById(id).orElseThrow(() ->
-                        new EntityNotFoundException("Pas de responsable pour cet ID"));
+                        new EntityNotFoundException(ErrorCode.RESPONSABLE_NOT_FOUND, ErrorCode.RESPONSABLE_NOT_FOUND));
         responsableRepository.delete(responsable);
     }
 }

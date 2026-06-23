@@ -1,9 +1,11 @@
 package com.touba.backend.service.impl;
 
+import com.example.authjwt.dto.ValidationErrorDto;
 import com.touba.backend.dto.AccueillantDto;
 import com.touba.backend.dto.ResidenceDto;
 import com.touba.backend.exception.EntityInvalidException;
 import com.touba.backend.exception.EntityNotFoundException;
+import com.touba.backend.exception.ErrorCode;
 import com.touba.backend.model.Accueillant;
 import com.touba.backend.model.Role;
 import com.touba.backend.repository.AccueillantRepository;
@@ -28,9 +30,9 @@ public class AccueillantServiceImpl implements AccueillantService {
 
     @Override
     public AccueillantDto save(AccueillantDto dto) {
-        List<String> errors = AccueillantValidator.validate(dto);
+        List<ValidationErrorDto> errors = AccueillantValidator.validate(dto);
         if (!errors.isEmpty()) {
-            throw new EntityInvalidException("L'accueillant est invalid", errors);
+            throw new EntityInvalidException(ErrorCode.VALIDATION_ACCUEILLANT_INVALID, ErrorCode.VALIDATION_ACCUEILLANT_INVALID, errors);
         }
         Accueillant accueillant = AccueillantDto.toEntity(dto);
         Role role = roleRepository.findByLibelle("accueillant").orElse(null);
@@ -45,15 +47,15 @@ public class AccueillantServiceImpl implements AccueillantService {
 
     @Override
     public AccueillantDto update(AccueillantDto dto) {
-        List<String> errors = AccueillantValidator.validate(dto);
+        List<ValidationErrorDto> errors = AccueillantValidator.validate(dto);
         if (dto.getId() == null) {
-            errors.add("L'ID est obligatoire pour modifier l'accueillant");
+            errors.add(ValidationErrorDto.of("id", ErrorCode.ACCUEILLANT_ID_REQUIRED));
         }
         if (!errors.isEmpty()) {
-            throw new EntityInvalidException("L'accueillant est invalid", errors);
+            throw new EntityInvalidException(ErrorCode.VALIDATION_ACCUEILLANT_INVALID, ErrorCode.VALIDATION_ACCUEILLANT_INVALID, errors);
         }
         Accueillant accueillant = accueillantRepository.findById(dto.getId()).orElseThrow(
-                () -> new EntityNotFoundException("Pas d'accueillant avec cet ID")
+                () -> new EntityNotFoundException(ErrorCode.ACCUEILLANT_NOT_FOUND, ErrorCode.ACCUEILLANT_NOT_FOUND)
         );
         accueillant.getUtilisateur().setPrenom(dto.getUtilisateur().getPrenom());
         accueillant.getUtilisateur().setNom(dto.getUtilisateur().getNom());
@@ -69,7 +71,7 @@ public class AccueillantServiceImpl implements AccueillantService {
     public AccueillantDto findById(Long id) {
         return AccueillantDto.fromEntity(
                 accueillantRepository.findById(id).orElseThrow(
-                        () -> new EntityNotFoundException("Pas d'accueillant avec cet ID")
+                        () -> new EntityNotFoundException(ErrorCode.ACCUEILLANT_NOT_FOUND, ErrorCode.ACCUEILLANT_NOT_FOUND)
                 )
         );
     }
@@ -83,14 +85,14 @@ public class AccueillantServiceImpl implements AccueillantService {
     @Override
     public AccueillantDto findByUsername(String username) {
         return AccueillantDto.fromEntity(accueillantRepository.findByUsername(username).orElseThrow(
-                () -> new EntityNotFoundException("Pas d'accueillant avec cet ID")
+                () -> new EntityNotFoundException(ErrorCode.ACCUEILLANT_NOT_FOUND, ErrorCode.ACCUEILLANT_NOT_FOUND)
         ));
     }
 
     @Override
     public void delete(Long id) {
         Accueillant accueillant = accueillantRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Pas d'accueillant avec cet ID")
+                () -> new EntityNotFoundException(ErrorCode.ACCUEILLANT_NOT_FOUND, ErrorCode.ACCUEILLANT_NOT_FOUND)
         );
         accueillantRepository.delete(accueillant);
     }

@@ -1,17 +1,16 @@
 package com.touba.backend.validator;
 
+import com.example.authjwt.dto.ValidationErrorDto;
 import com.touba.backend.dto.AccueillantDto;
-import org.springframework.util.StringUtils;
-
-import java.util.ArrayList;
+import com.touba.backend.exception.ErrorCode;
 import java.util.List;
 
 public class AccueillantValidator {
 
-    public static List<String> validate(AccueillantDto dto) {
-        List<String> errors = UtilisateurValidator.validate(dto.getUtilisateur());
+    public static List<ValidationErrorDto> validate(AccueillantDto dto) {
+        List<ValidationErrorDto> errors = UtilisateurValidator.validate(dto.getUtilisateur());
         if (dto.getResidence() == null) {
-            errors.add("La résidence de l'accueillant est obligatoire");
+            errors.add(ValidationErrorDto.of("residence", ErrorCode.ACCUEILLANT_RESIDENCE_REQUIRED));
         }
         return errors;
     }

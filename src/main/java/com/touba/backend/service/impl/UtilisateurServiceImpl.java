@@ -1,8 +1,10 @@
 package com.touba.backend.service.impl;
 
+import com.example.authjwt.dto.ValidationErrorDto;
 import com.touba.backend.dto.UtilisateurDto;
 import com.touba.backend.exception.EntityInvalidException;
 import com.touba.backend.exception.EntityNotFoundException;
+import com.touba.backend.exception.ErrorCode;
 import com.touba.backend.model.Role;
 import com.touba.backend.model.Utilisateur;
 import com.touba.backend.repository.RoleRepository;
@@ -37,11 +39,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Override
     public UtilisateurDto save(UtilisateurDto dto) {
-        List<String> errors = UtilisateurValidator.validate(dto);
+        List<ValidationErrorDto> errors = UtilisateurValidator.validate(dto);
         if (!errors.isEmpty()) {
-            throw new EntityInvalidException("L'utilisateur est invalid", errors);
+            throw new EntityInvalidException(ErrorCode.VALIDATION_UTILISATEUR_INVALID, ErrorCode.VALIDATION_UTILISATEUR_INVALID, errors);
         }
-        Role role = roleRepository.findByLibelle("admin").orElseThrow(() -> new EntityNotFoundException("Role admin introuvable"));
+        Role role = roleRepository.findByLibelle("admin").orElseThrow(() -> new EntityNotFoundException(ErrorCode.ROLE_ADMIN_NOT_FOUND, ErrorCode.ROLE_ADMIN_NOT_FOUND));
         Utilisateur utilisateur = UtilisateurDto.toEntity(dto);
         utilisateur.setUsername(utilisateur.getTelephone());
         utilisateur.setStatut(true);
@@ -54,10 +56,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     public UtilisateurDto getAccount() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         if (!StringUtils.hasLength(username)) {
-            throw new EntityNotFoundException("L'utilisateur ne s'est pas connecté");
+            throw new EntityNotFoundException(ErrorCode.USER_NOT_AUTHENTICATED, ErrorCode.USER_NOT_AUTHENTICATED);
         }
         return UtilisateurDto.fromEntity(
-                utilisateurRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("Cet utilisateur n'existe pas"))
+                utilisateurRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException(ErrorCode.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND))
         );
     }
 
@@ -69,20 +71,20 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     @Override
     public UtilisateurDto findById(Long id) {
         if (id == null) {
-            throw new EntityInvalidException("L'id ne doit pas être null");
+            throw new EntityInvalidException(ErrorCode.USER_ID_REQUIRED, ErrorCode.VALIDATION_UTILISATEUR_INVALID);
         }
         return UtilisateurDto.fromEntity(
-                utilisateurRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("L'utilisateur n'existe pas"))
+                utilisateurRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(ErrorCode.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND))
         );
     }
 
     @Override
     public UtilisateurDto changeStatut(Long id) {
         if (id == null) {
-            throw new EntityInvalidException("L'id ne doit pas être null");
+            throw new EntityInvalidException(ErrorCode.USER_ID_REQUIRED, ErrorCode.VALIDATION_UTILISATEUR_INVALID);
         }
         Utilisateur utilisateur = utilisateurRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("L'utilisateur n'existe pas"));
+                () -> new EntityNotFoundException(ErrorCode.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND));
         utilisateur.setStatut(!utilisateur.getStatut());
         return UtilisateurDto.fromEntity(utilisateurRepository.save(utilisateur));
     }

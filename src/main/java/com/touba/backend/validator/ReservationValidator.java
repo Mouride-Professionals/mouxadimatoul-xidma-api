@@ -1,6 +1,8 @@
 package com.touba.backend.validator;
 
+import com.example.authjwt.dto.ValidationErrorDto;
 import com.touba.backend.dto.request.ReservationRequestBody;
+import com.touba.backend.exception.ErrorCode;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -8,33 +10,33 @@ import java.util.List;
 
 public class ReservationValidator {
 
-    public static List<String> validateBody(ReservationRequestBody request) {
-        List<String> errors = new ArrayList<>();
+    public static List<ValidationErrorDto> validateBody(ReservationRequestBody request) {
+        List<ValidationErrorDto> errors = new ArrayList<>();
         if (request.getPeriod() == null) {
-            errors.add("La période est obligatoire");
+            errors.add(ValidationErrorDto.of("period", ErrorCode.RESERVATION_PERIOD_REQUIRED));
         } else if (request.getPeriod().getSortie() == null) {
-            errors.add("La date de sortie est obligatoire");
+            errors.add(ValidationErrorDto.of("period.sortie", ErrorCode.RESERVATION_DEPARTURE_DATE_REQUIRED));
         } else if (request.getPeriod().getEntree() == null) {
-            errors.add("La date d'entrée est obligatoire");
+            errors.add(ValidationErrorDto.of("period.entree", ErrorCode.RESERVATION_ARRIVAL_DATE_REQUIRED));
         }
         if (request.getEvenement() == null) {
-            errors.add("L'événement est obbligatoire");
+            errors.add(ValidationErrorDto.of("evenement", ErrorCode.RESERVATION_EVENT_REQUIRED));
         }
         if (request.getInvites().isEmpty()) {
-            errors.add("Veuillez ajouter au moins un invité");
+            errors.add(ValidationErrorDto.of("invites", ErrorCode.RESERVATION_GUESTS_REQUIRED));
         } else {
             request.getInvites().forEach(inv -> {
                 if (!StringUtils.hasLength(inv.getPrenom())) {
-                    errors.add("Le prénom de l'invité est obligatoire");
+                    errors.add(ValidationErrorDto.of("invites.prenom", ErrorCode.RESERVATION_GUEST_FIRST_NAME_REQUIRED));
                 }
                 if (!StringUtils.hasLength(inv.getNom())) {
-                    errors.add("Le nom de l'invité est obligatoire");
+                    errors.add(ValidationErrorDto.of("invites.nom", ErrorCode.RESERVATION_GUEST_LAST_NAME_REQUIRED));
                 }
                 if (!StringUtils.hasLength(inv.getTelephone())) {
-                    errors.add("Le téléphone de l'invité est obligatoire");
+                    errors.add(ValidationErrorDto.of("invites.telephone", ErrorCode.RESERVATION_GUEST_PHONE_REQUIRED));
                 }
                 if (inv.getChambre() == null) {
-                    errors.add("La chambre de l'invité est obligatoire");
+                    errors.add(ValidationErrorDto.of("invites.chambre", ErrorCode.RESERVATION_GUEST_ROOM_REQUIRED));
                 }
             });
         }

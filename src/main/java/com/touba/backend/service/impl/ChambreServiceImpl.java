@@ -1,8 +1,10 @@
 package com.touba.backend.service.impl;
 
+import com.example.authjwt.dto.ValidationErrorDto;
 import com.touba.backend.dto.ChambreDto;
 import com.touba.backend.exception.EntityInvalidException;
 import com.touba.backend.exception.EntityNotFoundException;
+import com.touba.backend.exception.ErrorCode;
 import com.touba.backend.model.Chambre;
 import com.touba.backend.model.Reservation;
 import com.touba.backend.repository.ChambreRepository;
@@ -31,9 +33,9 @@ public class ChambreServiceImpl implements ChambreService {
 
     @Override
     public ChambreDto save(ChambreDto dto) {
-        List<String> errors = ChambreValidator.validate(dto);
+        List<ValidationErrorDto> errors = ChambreValidator.validate(dto);
         if (!errors.isEmpty()) {
-            throw new EntityInvalidException("La chambre est invalide", errors);
+            throw new EntityInvalidException(ErrorCode.VALIDATION_CHAMBRE_INVALID, ErrorCode.VALIDATION_CHAMBRE_INVALID, errors);
         }
         Chambre chambre = ChambreDto.toEntity(dto);
         chambre.setReference(
@@ -46,9 +48,9 @@ public class ChambreServiceImpl implements ChambreService {
 
     @Override
     public ChambreDto update(ChambreDto dto) {
-        List<String> errors = ChambreValidator.validateUpdate(dto);
+        List<ValidationErrorDto> errors = ChambreValidator.validateUpdate(dto);
         if (!errors.isEmpty()) {
-            throw new EntityInvalidException("La chambre est invalide", errors);
+            throw new EntityInvalidException(ErrorCode.VALIDATION_CHAMBRE_INVALID, ErrorCode.VALIDATION_CHAMBRE_INVALID, errors);
         }
         return ChambreDto.fromEntity(chambreRepository.save(ChambreDto.toEntity(dto)));
     }
@@ -56,11 +58,11 @@ public class ChambreServiceImpl implements ChambreService {
     @Override
     public ChambreDto findById(Long id) {
         if (id == null) {
-            throw new EntityInvalidException("L'id ne doit pas être nul");
+            throw new EntityInvalidException(ErrorCode.CHAMBRE_ID_REQUIRED, ErrorCode.VALIDATION_CHAMBRE_INVALID);
         }
         return ChambreDto.fromEntity(
                 chambreRepository.findById(id).orElseThrow(
-                        () -> new EntityNotFoundException("La chambre n'existe pas")
+                        () -> new EntityNotFoundException(ErrorCode.CHAMBRE_NOT_FOUND, ErrorCode.CHAMBRE_NOT_FOUND)
                 )
         );
     }
@@ -68,7 +70,7 @@ public class ChambreServiceImpl implements ChambreService {
     @Override
     public Page<ChambreDto> findAllByPavillon(Long pavillon, int page, int size) {
         if (pavillon == null) {
-            throw new EntityInvalidException("L'id du pavillon ne doit pas être nul");
+            throw new EntityInvalidException(ErrorCode.CHAMBRE_PAVILLON_ID_REQUIRED, ErrorCode.VALIDATION_CHAMBRE_INVALID);
         }
         Pageable pageable = PageRequest.of(page, size, Sort.by("numero"));
         return chambreRepository.findAllByPavillon(pavillon, pageable).map(ChambreDto::fromEntity);

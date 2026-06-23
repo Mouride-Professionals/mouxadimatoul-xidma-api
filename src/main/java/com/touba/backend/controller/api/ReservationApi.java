@@ -45,7 +45,8 @@ public interface ReservationApi {
             @PathVariable Long residence,
             @RequestParam int year,
             @RequestParam Long event,
-            int presence
+            @RequestParam(defaultValue = "-1") int presence,
+            @RequestParam(defaultValue = "fr") String locale
     ) throws IOException;
 
     @DeleteMapping("/{id}")

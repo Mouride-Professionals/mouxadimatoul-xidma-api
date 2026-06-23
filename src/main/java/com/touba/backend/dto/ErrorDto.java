@@ -11,8 +11,12 @@ public class ErrorDto {
 
     private Integer httpCode;
 
+    private String code;
+
     private String message;
 
     private List<String> errors;
+
+    private List<ValidationErrorDto> validationErrors;
 
 }

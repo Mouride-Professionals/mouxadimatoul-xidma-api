@@ -1,8 +1,10 @@
 package com.touba.backend.handler;
 
 import com.example.authjwt.dto.ErrorDto;
+import com.example.authjwt.dto.ValidationErrorDto;
 import com.touba.backend.exception.EntityInvalidException;
 import com.touba.backend.exception.EntityNotFoundException;
+import com.touba.backend.exception.ErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,32 +22,38 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
         final ErrorDto errorDto = ErrorDto.builder()
                 .httpCode(badRequest.value())
+                .code(ErrorCode.AUTH_BAD_CREDENTIALS)
                 .message(exception.getMessage())
                 .errors(Collections.emptyList())
+                .validationErrors(Collections.emptyList())
                 .build();
         return new ResponseEntity<>(errorDto, badRequest);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorDto> handleEntityNotFoundException(EntityNotFoundException exception) {
-        final HttpStatus internalServerError = HttpStatus.INTERNAL_SERVER_ERROR;
+        final HttpStatus notFound = HttpStatus.NOT_FOUND;
         final ErrorDto errorDto = ErrorDto.builder()
-                .httpCode(internalServerError.value())
+                .httpCode(notFound.value())
+                .code(exception.getCode())
                 .message(exception.getMessage())
                 .errors(Collections.emptyList())
+                .validationErrors(Collections.emptyList())
                 .build();
-        return new ResponseEntity<>(errorDto, internalServerError);
+        return new ResponseEntity<>(errorDto, notFound);
     }
 
     @ExceptionHandler(EntityInvalidException.class)
     public ResponseEntity<ErrorDto> handleEntityInvalidException(EntityInvalidException exception) {
-        final HttpStatus notFound = HttpStatus.NOT_FOUND;
+        final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
         final ErrorDto errorDto = ErrorDto.builder()
-                .httpCode(notFound.value())
+                .httpCode(badRequest.value())
+                .code(exception.getCode())
                 .message(exception.getMessage())
-                .errors(exception.getErrors())
+                .errors(exception.getValidationErrors().stream().map(ValidationErrorDto::getCode).toList())
+                .validationErrors(exception.getValidationErrors())
                 .build();
-        return new ResponseEntity<>(errorDto, notFound);
+        return new ResponseEntity<>(errorDto, badRequest);
     }
 
 }

@@ -1,8 +1,10 @@
 package com.touba.backend.service.impl;
 
+import com.example.authjwt.dto.ValidationErrorDto;
 import com.touba.backend.dto.PavillonDto;
 import com.touba.backend.exception.EntityInvalidException;
 import com.touba.backend.exception.EntityNotFoundException;
+import com.touba.backend.exception.ErrorCode;
 import com.touba.backend.model.Pavillon;
 import com.touba.backend.repository.PavillonRepository;
 import com.touba.backend.service.PavillonService;
@@ -22,9 +24,9 @@ public class PavillonServiceImpl implements PavillonService {
 
     @Override
     public PavillonDto save(PavillonDto dto) {
-        List<String> errors = PavillonValidator.validate(dto);
+        List<ValidationErrorDto> errors = PavillonValidator.validate(dto);
         if (!errors.isEmpty()) {
-            throw new EntityInvalidException("Le pavillon n'est pas valid", errors);
+            throw new EntityInvalidException(ErrorCode.VALIDATION_PAVILLON_INVALID, ErrorCode.VALIDATION_PAVILLON_INVALID, errors);
         }
         Pavillon pavillon =PavillonDto.toEntity(dto);
         pavillon.getChambres().forEach(c -> {
@@ -51,7 +53,7 @@ public class PavillonServiceImpl implements PavillonService {
     @Override
     public PavillonDto findById(Long id) {
         return PavillonDto.fromEntity(
-                pavillonRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Pavillon n'existe pas"))
+                pavillonRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(ErrorCode.PAVILLON_NOT_FOUND, ErrorCode.PAVILLON_NOT_FOUND))
         );
     }
 }

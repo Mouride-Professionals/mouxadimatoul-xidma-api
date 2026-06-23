@@ -1,8 +1,10 @@
 package com.touba.backend.service.impl;
 
+import com.example.authjwt.dto.ValidationErrorDto;
 import com.touba.backend.dto.DelegationDto;
 import com.touba.backend.exception.EntityInvalidException;
 import com.touba.backend.exception.EntityNotFoundException;
+import com.touba.backend.exception.ErrorCode;
 import com.touba.backend.model.Delegation;
 import com.touba.backend.repository.DelegationRepository;
 import com.touba.backend.service.DelegationService;
@@ -22,9 +24,9 @@ public class DelegationServiceImpl implements DelegationService {
 
     @Override
     public DelegationDto save(DelegationDto dto) {
-        List<String> errors = DelegationValidator.validate(dto);
+        List<ValidationErrorDto> errors = DelegationValidator.validate(dto);
         if (!errors.isEmpty()) {
-            throw new EntityInvalidException("La délégation est invalide", errors);
+            throw new EntityInvalidException(ErrorCode.VALIDATION_DELEGATION_INVALID, ErrorCode.VALIDATION_DELEGATION_INVALID, errors);
         }
         Delegation delegation = DelegationDto.toEntity(dto);
         delegation.getInvites().forEach(invite -> invite.setDelegation(delegation));
@@ -33,12 +35,12 @@ public class DelegationServiceImpl implements DelegationService {
 
     @Override
     public DelegationDto update(DelegationDto dto) {
-        List<String> errors = DelegationValidator.validate(dto);
+        List<ValidationErrorDto> errors = DelegationValidator.validate(dto);
         if (!errors.isEmpty()) {
-            throw new EntityInvalidException("La délégation est invalide", errors);
+            throw new EntityInvalidException(ErrorCode.VALIDATION_DELEGATION_INVALID, ErrorCode.VALIDATION_DELEGATION_INVALID, errors);
         }
         Delegation delegation = delegationRepository.findById(dto.getId()).orElseThrow(
-                () -> new EntityNotFoundException("Pas de délégation avec cet ID")
+                () -> new EntityNotFoundException(ErrorCode.DELEGATION_NOT_FOUND, ErrorCode.DELEGATION_NOT_FOUND)
         );
         delegation.setNom(dto.getNom());
         delegation.setNombre(dto.getNombre());
@@ -49,7 +51,7 @@ public class DelegationServiceImpl implements DelegationService {
     public DelegationDto findById(Long id) {
         return DelegationDto.fromEntity(
                 delegationRepository.findById(id).orElseThrow(
-                        () -> new EntityNotFoundException("Pas de délégation avec cet ID")
+                        () -> new EntityNotFoundException(ErrorCode.DELEGATION_NOT_FOUND, ErrorCode.DELEGATION_NOT_FOUND)
                 )
         );
     }

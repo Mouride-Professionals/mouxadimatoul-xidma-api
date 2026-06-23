@@ -1,9 +1,11 @@
 package com.touba.backend.service.impl;
 
+import com.example.authjwt.dto.ValidationErrorDto;
 import com.touba.backend.dto.ResidenceDto;
 import com.touba.backend.dto.request.ResidenceRequest;
 import com.touba.backend.exception.EntityInvalidException;
 import com.touba.backend.exception.EntityNotFoundException;
+import com.touba.backend.exception.ErrorCode;
 import com.touba.backend.model.Residence;
 import com.touba.backend.model.Utilisateur;
 import com.touba.backend.repository.ResidenceRepository;
@@ -32,9 +34,9 @@ public class ResidenceServiceImpl implements ResidenceService {
 
     @Override
     public ResidenceDto save(ResidenceRequest request) {
-        List<String> errors = ResidenceValidator.validate(request);
+        List<ValidationErrorDto> errors = ResidenceValidator.validate(request);
         if (!errors.isEmpty()) {
-            throw new EntityInvalidException("La résidence n'est pas valid", errors);
+            throw new EntityInvalidException(ErrorCode.VALIDATION_RESIDENCE_INVALID, ErrorCode.VALIDATION_RESIDENCE_INVALID, errors);
         }
         Residence residence = ResidenceRequest.toEntity(request);
         if (request.getImage() != null) {
@@ -45,7 +47,7 @@ public class ResidenceServiceImpl implements ResidenceService {
             }
         }
         Utilisateur responsable = new Utilisateur();
-        responsable.setRole(roleRepository.findByLibelle("responsable").orElseThrow(() -> new EntityNotFoundException("Pas de role responsable")));
+        responsable.setRole(roleRepository.findByLibelle("responsable").orElseThrow(() -> new EntityNotFoundException(ErrorCode.ROLE_RESPONSABLE_NOT_FOUND, ErrorCode.ROLE_RESPONSABLE_NOT_FOUND)));
         responsable.setPrenom(request.getPrenom());
         responsable.setNom(request.getNom());
         responsable.setTelephone(request.getTelephone());
@@ -58,9 +60,9 @@ public class ResidenceServiceImpl implements ResidenceService {
 
     @Override
     public ResidenceDto update(ResidenceDto dto) {
-        List<String> errors = ResidenceValidator.validate(dto);
+        List<ValidationErrorDto> errors = ResidenceValidator.validate(dto);
         if (!errors.isEmpty()) {
-            throw new EntityInvalidException("La résidence n'est pas valid", errors);
+            throw new EntityInvalidException(ErrorCode.VALIDATION_RESIDENCE_INVALID, ErrorCode.VALIDATION_RESIDENCE_INVALID, errors);
         }
         return ResidenceDto.fromEntity(residenceRepository.save(ResidenceDto.toEntity(dto)));
     }
@@ -73,14 +75,14 @@ public class ResidenceServiceImpl implements ResidenceService {
     @Override
     public ResidenceDto findById(Long id) {
         return ResidenceDto.fromEntity(residenceRepository.findById(id).orElseThrow(() ->
-            new EntityNotFoundException("La résidence est introuvable")
+            new EntityNotFoundException(ErrorCode.RESIDENCE_NOT_FOUND, ErrorCode.RESIDENCE_NOT_FOUND)
         ));
     }
 
     @Override
     public ResidenceDto findByResponsable(String responsable) {
         return ResidenceDto.fromEntity(residenceRepository.findByResponsable(responsable).orElseThrow(() ->
-            new EntityNotFoundException("La résidence est introuvable")
+            new EntityNotFoundException(ErrorCode.RESIDENCE_NOT_FOUND, ErrorCode.RESIDENCE_NOT_FOUND)
         ));
     }
 }

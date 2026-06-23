@@ -1,8 +1,10 @@
 package com.touba.backend.service.impl;
 
+import com.example.authjwt.dto.ValidationErrorDto;
 import com.touba.backend.dto.InviteDto;
 import com.touba.backend.exception.EntityInvalidException;
 import com.touba.backend.exception.EntityNotFoundException;
+import com.touba.backend.exception.ErrorCode;
 import com.touba.backend.repository.InviteRepository;
 import com.touba.backend.service.InviteService;
 import com.touba.backend.validator.InviteValidator;
@@ -19,9 +21,9 @@ public class InviteServiceImpl implements InviteService {
 
     @Override
     public InviteDto save(InviteDto dto) {
-        List<String> errors = InviteValidator.validate(dto);
+        List<ValidationErrorDto> errors = InviteValidator.validate(dto);
         if (!errors.isEmpty()) {
-            throw new EntityInvalidException("Invite invalid", errors);
+            throw new EntityInvalidException(ErrorCode.VALIDATION_INVITE_INVALID, ErrorCode.VALIDATION_INVITE_INVALID, errors);
         }
         return InviteDto.fromEntity(inviteRepository.save(InviteDto.toEntity(dto)));
     }
@@ -30,7 +32,7 @@ public class InviteServiceImpl implements InviteService {
     public InviteDto findByTelephone(String telephone) {
         return InviteDto.fromEntity(
                 inviteRepository.findByTelephone(telephone).orElseThrow(
-                        () -> new EntityNotFoundException("Pas d'invité avec ce numéro")
+                        () -> new EntityNotFoundException(ErrorCode.INVITE_NOT_FOUND, ErrorCode.INVITE_NOT_FOUND)
                 )
         );
     }

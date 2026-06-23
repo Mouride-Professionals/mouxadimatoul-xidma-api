@@ -47,8 +47,8 @@ public class ReservationController implements ReservationApi {
     }
 
     @Override
-    public void exportFile(HttpServletResponse response, Long residence, int year, Long event, int presence) throws IOException {
-        reservationService.exportExcelFile(response, residence, year, event, presence);
+    public void exportFile(HttpServletResponse response, Long residence, int year, Long event, int presence, String locale) throws IOException {
+        reservationService.exportExcelFile(response, residence, year, event, presence, locale);
     }
 
     @Override

@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 @Getter
 @Setter
@@ -23,10 +23,14 @@ public class FileReservationDto {
     private String presence;
 
     public static FileReservationDto mapToFile(Reservation reservation) {
+        return mapToFile(reservation, "fr");
+    }
+
+    public static FileReservationDto mapToFile(Reservation reservation, String locale) {
         if (reservation == null) {
             return null;
         }
-        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.SHORT, toJavaLocale(locale));
         return FileReservationDto.builder()
                 .invite(reservation.getInvite().getPrenom() + " " + reservation.getInvite().getNom().toUpperCase())
                 .delegation(reservation.getInvite().getDelegation() != null ? reservation.getInvite().getDelegation().getNom() : "")
@@ -36,7 +40,23 @@ public class FileReservationDto {
                 .accueillant(reservation.getAccueillant().getUtilisateur().getPrenom() + " " +reservation.getAccueillant().getUtilisateur().getNom())
                 .dateEntree(dateFormatter.format(reservation.getDateEntree()))
                 .dateSortie(dateFormatter.format(reservation.getDateSortie()))
-                .presence(reservation.getPresence() ? "oui" : "non")
+                .presence(formatPresence(reservation.getPresence(), locale))
                 .build();
+    }
+
+    private static String formatPresence(Boolean presence, String locale) {
+        boolean isPresent = Boolean.TRUE.equals(presence);
+        if (isArabic(locale)) {
+            return isPresent ? "نعم" : "لا";
+        }
+        return isPresent ? "Oui" : "Non";
+    }
+
+    private static Locale toJavaLocale(String locale) {
+        return isArabic(locale) ? Locale.forLanguageTag("ar") : Locale.FRANCE;
+    }
+
+    private static boolean isArabic(String locale) {
+        return locale != null && locale.toLowerCase(Locale.ROOT).startsWith("ar");
     }
 }
