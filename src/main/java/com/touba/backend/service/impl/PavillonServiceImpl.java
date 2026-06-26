@@ -30,11 +30,16 @@ public class PavillonServiceImpl implements PavillonService {
         }
         Pavillon pavillon =PavillonDto.toEntity(dto);
         pavillon.getChambres().forEach(c -> {
+            if (c.getNiveau() == null) {
+                c.setNiveau(0);
+            }
             c.setPavillon(pavillon);
             c.setReference(
-                Arrays.stream(c.getPavillon().getLibelle().split(" "))
+                Arrays.stream(c.getPavillon().getLibelle().trim().split("\\s+"))
                         .map(word -> word.charAt(0))
-                        .toString() + "-" + c.getNiveau().toString() + c.getNumero()
+                        .map(String::valueOf)
+                        .collect(Collectors.joining())
+                        .toUpperCase() + "-" + c.getNiveau().toString() + c.getNumero()
             );
         });
         return PavillonDto.fromEntity(pavillonRepository.save(pavillon));

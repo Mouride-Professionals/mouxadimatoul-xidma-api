@@ -39,9 +39,11 @@ public class ChambreServiceImpl implements ChambreService {
         }
         Chambre chambre = ChambreDto.toEntity(dto);
         chambre.setReference(
-                Arrays.stream(dto.getPavillon().getLibelle().split(" "))
+                Arrays.stream(dto.getPavillon().getLibelle().trim().split("\\s+"))
                         .map(word -> word.charAt(0))
-                        .toString() + "-" + dto.getNiveau().toString() + dto.getNumero()
+                        .map(String::valueOf)
+                        .collect(Collectors.joining())
+                        .toUpperCase() + "-" + dto.getNiveau().toString() + dto.getNumero()
         );
         return ChambreDto.fromEntity(chambreRepository.save(chambre));
     }
