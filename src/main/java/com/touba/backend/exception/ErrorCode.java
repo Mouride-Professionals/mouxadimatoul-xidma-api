@@ -2,6 +2,13 @@ package com.touba.backend.exception;
 
 public final class ErrorCode {
 
+    public static final String ASSIGNMENT_AGENT_REQUIRED = "ASSIGNMENT_AGENT_REQUIRED";
+    public static final String ASSIGNMENT_ID_REQUIRED = "ASSIGNMENT_ID_REQUIRED";
+    public static final String ASSIGNMENT_NOT_FOUND = "ASSIGNMENT_NOT_FOUND";
+    public static final String ASSIGNMENT_RESIDENCE_REQUIRED = "ASSIGNMENT_RESIDENCE_REQUIRED";
+    public static final String ASSIGNMENT_RESPONSIBILITIES_REQUIRED = "ASSIGNMENT_RESPONSIBILITIES_REQUIRED";
+    public static final String VALIDATION_ASSIGNMENT_INVALID = "VALIDATION_ASSIGNMENT_INVALID";
+
     public static final String AUTH_BAD_CREDENTIALS = "AUTH_BAD_CREDENTIALS";
     public static final String ENTITY_NOT_FOUND = "ENTITY_NOT_FOUND";
     public static final String VALIDATION_INVALID_ENTITY = "VALIDATION_INVALID_ENTITY";

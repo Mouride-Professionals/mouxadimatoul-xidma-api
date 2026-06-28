@@ -1,5 +1,6 @@
 package com.touba.backend.dto;
 
+import com.touba.backend.model.AccountType;
 import com.touba.backend.model.Utilisateur;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,7 @@ public class UtilisateurDto {
 
     private String username;
 
-    private RoleDto role;
+    private AccountType accountType;
 
     private Boolean statut;
 
@@ -22,6 +23,8 @@ public class UtilisateurDto {
 
     private String telephone;
 
+    private String whatsapp;
+
     public static UtilisateurDto fromEntity(Utilisateur utilisateur) {
         if (utilisateur == null) {
             return null;
@@ -29,11 +32,12 @@ public class UtilisateurDto {
         return UtilisateurDto.builder()
                 .id(utilisateur.getId())
                 .username(utilisateur.getUsername())
-                .role(RoleDto.fromEntity(utilisateur.getRole()))
+                .accountType(utilisateur.getAccountType())
                 .statut(utilisateur.getStatut())
                 .prenom(utilisateur.getPrenom())
                 .nom(utilisateur.getNom())
                 .telephone(utilisateur.getTelephone())
+                .whatsapp(utilisateur.getWhatsapp())
                 .build();
     }
 
@@ -44,11 +48,12 @@ public class UtilisateurDto {
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setId(dto.getId());
         utilisateur.setUsername(dto.getUsername());
-        utilisateur.setRole(RoleDto.toEntity(dto.getRole()));
+        utilisateur.setAccountType(dto.getAccountType());
         utilisateur.setStatut(dto.getStatut());
         utilisateur.setPrenom(dto.getPrenom());
         utilisateur.setNom(dto.getNom());
         utilisateur.setTelephone(dto.getTelephone());
+        utilisateur.setWhatsapp(dto.getWhatsapp());
         return utilisateur;
     }
 

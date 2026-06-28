@@ -14,8 +14,8 @@ public class UtilisateurController implements UtilisateurApi {
     private UtilisateurService utilisateurService;
 
     @Override
-    public Page<UtilisateurDto> findAll(int page, int size, String search, String role) {
-        return utilisateurService.findAll(page, size, search, role);
+    public Page<UtilisateurDto> findAll(int page, int size, String search, String accountType) {
+        return utilisateurService.findAll(page, size, search, accountType);
     }
 
     @Override

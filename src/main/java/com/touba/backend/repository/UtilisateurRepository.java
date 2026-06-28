@@ -1,19 +1,22 @@
 package com.touba.backend.repository;
 
+import com.touba.backend.model.AccountType;
 import com.touba.backend.model.Utilisateur;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
 public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> {
     Optional<Utilisateur> findByUsername(String username);
 
-    @Query("SELECT u FROM Utilisateur u WHERE u.role.libelle LIKE %:role% AND " +
+    @Query("SELECT u FROM Utilisateur u WHERE " +
+            "(:accountType IS NULL OR u.accountType = :accountType) AND " +
             "(lower(u.prenom) LIKE %:search% " +
             "OR lower(u.nom) LIKE %:search% " +
-            "OR u.telephone LIKE %:search%) AND u.role.libelle <> 'accueillant'")
-    Page<Utilisateur> findAllBySearch(Pageable pageable, String search, String role);
+            "OR u.telephone LIKE %:search%)")
+    Page<Utilisateur> findAllBySearch(Pageable pageable, @Param("search") String search, @Param("accountType") AccountType accountType);
 }

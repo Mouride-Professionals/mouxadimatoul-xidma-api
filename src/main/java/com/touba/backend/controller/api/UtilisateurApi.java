@@ -14,7 +14,7 @@ public interface UtilisateurApi {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(defaultValue = "") String search,
-            @RequestParam(defaultValue = "") String role);
+            @RequestParam(defaultValue = "") String accountType);
 
     @PostMapping
     UtilisateurDto save(@RequestBody UtilisateurDto dto);

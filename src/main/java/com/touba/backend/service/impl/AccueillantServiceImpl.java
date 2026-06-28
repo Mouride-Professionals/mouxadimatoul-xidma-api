@@ -7,9 +7,8 @@ import com.touba.backend.exception.EntityInvalidException;
 import com.touba.backend.exception.EntityNotFoundException;
 import com.touba.backend.exception.ErrorCode;
 import com.touba.backend.model.Accueillant;
-import com.touba.backend.model.Role;
+import com.touba.backend.model.AccountType;
 import com.touba.backend.repository.AccueillantRepository;
-import com.touba.backend.repository.RoleRepository;
 import com.touba.backend.service.AccueillantService;
 import com.touba.backend.validator.AccueillantValidator;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,6 @@ import java.util.List;
 public class AccueillantServiceImpl implements AccueillantService {
 
     private final AccueillantRepository accueillantRepository;
-    private final RoleRepository roleRepository;
 
     @Override
     public AccueillantDto save(AccueillantDto dto) {
@@ -35,10 +33,9 @@ public class AccueillantServiceImpl implements AccueillantService {
             throw new EntityInvalidException(ErrorCode.VALIDATION_ACCUEILLANT_INVALID, ErrorCode.VALIDATION_ACCUEILLANT_INVALID, errors);
         }
         Accueillant accueillant = AccueillantDto.toEntity(dto);
-        Role role = roleRepository.findByLibelle("accueillant").orElse(null);
         accueillant.getUtilisateur().setUsername(dto.getUtilisateur().getTelephone());
         accueillant.getUtilisateur().setStatut(true);
-        accueillant.getUtilisateur().setRole(role);
+        accueillant.getUtilisateur().setAccountType(AccountType.KHIDMA_AGENT);
         accueillant.getUtilisateur().setPassword(new BCryptPasswordEncoder().encode("test"));
         return AccueillantDto.fromEntity(
                 accueillantRepository.save(accueillant)

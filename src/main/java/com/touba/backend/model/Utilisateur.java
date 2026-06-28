@@ -2,7 +2,8 @@ package com.touba.backend.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,8 +19,8 @@ public class Utilisateur extends AbstractModel {
 
     private String password;
 
-    @ManyToOne()
-    private Role role;
+    @Enumerated(EnumType.STRING)
+    private AccountType accountType;
 
     private Boolean statut;
 
@@ -28,5 +29,7 @@ public class Utilisateur extends AbstractModel {
     private String nom;
 
     private String telephone;
+
+    private String whatsapp;
 
 }

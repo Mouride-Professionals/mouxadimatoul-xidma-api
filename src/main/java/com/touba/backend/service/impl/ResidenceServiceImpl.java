@@ -6,11 +6,10 @@ import com.touba.backend.dto.request.ResidenceRequest;
 import com.touba.backend.exception.EntityInvalidException;
 import com.touba.backend.exception.EntityNotFoundException;
 import com.touba.backend.exception.ErrorCode;
+import com.touba.backend.model.AccountType;
 import com.touba.backend.model.Residence;
 import com.touba.backend.model.Utilisateur;
 import com.touba.backend.repository.ResidenceRepository;
-import com.touba.backend.repository.RoleRepository;
-import com.touba.backend.repository.UtilisateurRepository;
 import com.touba.backend.service.ResidenceService;
 import com.touba.backend.service.RessourceService;
 import com.touba.backend.validator.ResidenceValidator;
@@ -27,8 +26,6 @@ public class ResidenceServiceImpl implements ResidenceService {
 
     @Autowired
     private ResidenceRepository residenceRepository;
-    @Autowired
-    private RoleRepository roleRepository;
     @Autowired
     private RessourceService ressourceService;
 
@@ -47,7 +44,7 @@ public class ResidenceServiceImpl implements ResidenceService {
             }
         }
         Utilisateur responsable = new Utilisateur();
-        responsable.setRole(roleRepository.findByLibelle("responsable").orElseThrow(() -> new EntityNotFoundException(ErrorCode.ROLE_RESPONSABLE_NOT_FOUND, ErrorCode.ROLE_RESPONSABLE_NOT_FOUND)));
+        responsable.setAccountType(AccountType.KHIDMA_AGENT);
         responsable.setPrenom(request.getPrenom());
         responsable.setNom(request.getNom());
         responsable.setTelephone(request.getTelephone());

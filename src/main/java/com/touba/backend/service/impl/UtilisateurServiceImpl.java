@@ -5,9 +5,8 @@ import com.touba.backend.dto.UtilisateurDto;
 import com.touba.backend.exception.EntityInvalidException;
 import com.touba.backend.exception.EntityNotFoundException;
 import com.touba.backend.exception.ErrorCode;
-import com.touba.backend.model.Role;
+import com.touba.backend.model.AccountType;
 import com.touba.backend.model.Utilisateur;
-import com.touba.backend.repository.RoleRepository;
 import com.touba.backend.repository.UtilisateurRepository;
 import com.touba.backend.service.UtilisateurService;
 import com.touba.backend.validator.UtilisateurValidator;
@@ -28,13 +27,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     @Autowired
     private UtilisateurRepository utilisateurRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
-
     @Override
-    public Page<UtilisateurDto> findAll(int page, int size, String search, String role) {
+    public Page<UtilisateurDto> findAll(int page, int size, String search, String accountType) {
         Pageable pageable = PageRequest.of(page, size);
-        return utilisateurRepository.findAllBySearch(pageable, search.toLowerCase().trim(), role).map(UtilisateurDto::fromEntity);
+        AccountType type = (accountType != null && !accountType.isBlank()) ? AccountType.valueOf(accountType) : null;
+        return utilisateurRepository.findAllBySearch(pageable, search.toLowerCase().trim(), type).map(UtilisateurDto::fromEntity);
     }
 
     @Override
@@ -43,11 +40,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         if (!errors.isEmpty()) {
             throw new EntityInvalidException(ErrorCode.VALIDATION_UTILISATEUR_INVALID, ErrorCode.VALIDATION_UTILISATEUR_INVALID, errors);
         }
-        Role role = roleRepository.findByLibelle("admin").orElseThrow(() -> new EntityNotFoundException(ErrorCode.ROLE_ADMIN_NOT_FOUND, ErrorCode.ROLE_ADMIN_NOT_FOUND));
         Utilisateur utilisateur = UtilisateurDto.toEntity(dto);
         utilisateur.setUsername(utilisateur.getTelephone());
         utilisateur.setStatut(true);
-        utilisateur.setRole(role);
+        utilisateur.setAccountType(AccountType.KHIDMA_AGENT);
         utilisateur.setPassword(new BCryptPasswordEncoder().encode("test"));
         return UtilisateurDto.fromEntity(utilisateurRepository.save(utilisateur));
     }

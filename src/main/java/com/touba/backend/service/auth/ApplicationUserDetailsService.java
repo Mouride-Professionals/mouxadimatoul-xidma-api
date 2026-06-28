@@ -1,5 +1,6 @@
 package com.touba.backend.service.auth;
 
+import com.touba.backend.model.AccountType;
 import com.touba.backend.model.Utilisateur;
 import com.touba.backend.repository.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,9 @@ public class ApplicationUserDetailsService implements UserDetailsService {
                 () -> new UsernameNotFoundException("User not found")
         );
 
+        AccountType accountType = user.getAccountType() != null ? user.getAccountType() : AccountType.KHIDMA_AGENT;
         List<SimpleGrantedAuthority> authorities = List.of(
-                new SimpleGrantedAuthority("ROLE_" + user.getRole().getLibelle().toUpperCase())
+                new SimpleGrantedAuthority("ROLE_" + accountType.name())
         );
         return new User(username, user.getPassword(), authorities);
     }
