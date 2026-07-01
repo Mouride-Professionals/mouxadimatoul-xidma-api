@@ -10,6 +10,7 @@ import com.touba.backend.model.Reservation;
 import com.touba.backend.repository.InviteRepository;
 import com.touba.backend.repository.ReservationRepository;
 import com.touba.backend.service.ReservationService;
+import com.touba.backend.utils.ExportPdfFile;
 import com.touba.backend.utils.UploadExcelFile;
 import com.touba.backend.validator.ReservationValidator;
 import jakarta.servlet.http.HttpServletResponse;
@@ -114,6 +115,21 @@ public class ReservationServiceImpl implements ReservationService {
                     locale
             );
             excelFile.generateExcelFile(response);
+        }
+    }
+
+    @Override
+    public void exportPdfFile(HttpServletResponse response, Long residence, int year, Long event, int presence, String locale) throws IOException {
+        List<Reservation> reservations = reservationRepository.findAll(year, event, residence, presence);
+        if (!reservations.isEmpty()) {
+            String filename = "reservation " + reservations.get(0).getEvenement().getLibelle() + " " + year + ".pdf";
+            response.setContentType("application/pdf");
+            response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+            ExportPdfFile pdfFile = new ExportPdfFile(
+                    reservations.stream().map(r -> FileReservationDto.mapToFile(r, locale)).collect(Collectors.toList()),
+                    locale
+            );
+            pdfFile.generatePdfFile(response);
         }
     }
 

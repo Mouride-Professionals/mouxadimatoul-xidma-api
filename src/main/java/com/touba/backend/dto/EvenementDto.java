@@ -4,6 +4,7 @@ import com.touba.backend.model.Evenement;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -14,6 +15,10 @@ public class EvenementDto {
 
     private String libelle;
 
+    private LocalDate dateDebut;
+
+    private LocalDate dateFin;
+
     private List<ReservationDto> reservations;
 
     public static EvenementDto fromEntity(Evenement evenement) {
@@ -23,6 +28,8 @@ public class EvenementDto {
         return EvenementDto.builder()
                 .id(evenement.getId())
                 .libelle(evenement.getLibelle())
+                .dateDebut(evenement.getDateDebut())
+                .dateFin(evenement.getDateFin())
                 .build();
     }
 
@@ -33,6 +40,8 @@ public class EvenementDto {
         Evenement evenement = new Evenement();
         evenement.setId(dto.getId());
         evenement.setLibelle(dto.getLibelle());
+        evenement.setDateDebut(dto.getDateDebut());
+        evenement.setDateFin(dto.getDateFin());
         return evenement;
     }
 

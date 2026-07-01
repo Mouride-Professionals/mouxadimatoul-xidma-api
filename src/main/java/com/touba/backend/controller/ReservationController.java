@@ -52,6 +52,11 @@ public class ReservationController implements ReservationApi {
     }
 
     @Override
+    public void exportPdfFile(HttpServletResponse response, Long residence, int year, Long event, int presence, String locale) throws IOException {
+        reservationService.exportPdfFile(response, residence, year, event, presence, locale);
+    }
+
+    @Override
     public void delete(Long id) {
         reservationService.delete(id);
     }

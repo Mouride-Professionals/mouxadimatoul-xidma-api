@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,10 @@ import java.util.List;
 public class Evenement extends AbstractModel{
 
     private String libelle;
+
+    private LocalDate dateDebut;
+
+    private LocalDate dateFin;
 
     @OneToMany(mappedBy = "evenement")
     private List<Reservation> reservations = new ArrayList<>();

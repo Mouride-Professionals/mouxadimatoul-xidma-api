@@ -23,5 +23,7 @@ public interface ReservationService {
 
     void exportExcelFile(HttpServletResponse response, Long residence, int year, Long event, int presence, String locale) throws IOException;
 
+    void exportPdfFile(HttpServletResponse response, Long residence, int year, Long event, int presence, String locale) throws IOException;
+
     void delete(Long id);
 }

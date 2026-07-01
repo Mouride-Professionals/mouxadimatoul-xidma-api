@@ -49,6 +49,16 @@ public interface ReservationApi {
             @RequestParam(defaultValue = "fr") String locale
     ) throws IOException;
 
+    @GetMapping("/exportation/pdf/residence/{residence}")
+    void exportPdfFile(
+            HttpServletResponse response,
+            @PathVariable Long residence,
+            @RequestParam int year,
+            @RequestParam Long event,
+            @RequestParam(defaultValue = "-1") int presence,
+            @RequestParam(defaultValue = "fr") String locale
+    ) throws IOException;
+
     @DeleteMapping("/{id}")
     void delete(@PathVariable Long id);
 }

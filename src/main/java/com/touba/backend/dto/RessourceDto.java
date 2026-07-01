@@ -25,7 +25,6 @@ public class RessourceDto {
                 .id(ressource.getId())
                 .type(ressource.getType())
                 .nom(ressource.getNom())
-                .fichier(ressource.getFichier())
                 .build();
     }
 
