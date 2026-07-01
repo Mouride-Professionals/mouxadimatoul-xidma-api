@@ -31,4 +31,10 @@ public interface UtilisateurApi {
     @PutMapping("/statut/{id}")
     UtilisateurDto changeStatut(@PathVariable Long id);
 
+    @PutMapping("/{id}/password")
+    void changePassword(@PathVariable Long id, @RequestBody java.util.Map<String, String> body);
+
+    @PutMapping("/me/password")
+    void changeOwnPassword(@RequestBody java.util.Map<String, String> body);
+
 }

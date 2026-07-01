@@ -16,6 +16,8 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Long> {
 
     List<Assignment> findAllByAgentId(Long agentId);
 
+    List<Assignment> findAllByAgentIdIn(List<Long> agentIds);
+
     Optional<Assignment> findByAgentIdAndResidenceId(Long agentId, Long residenceId);
 
     @Query("SELECT a FROM Assignment a WHERE a.residence.id = :residenceId AND " +

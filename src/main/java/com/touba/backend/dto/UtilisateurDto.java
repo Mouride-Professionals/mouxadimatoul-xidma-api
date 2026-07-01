@@ -25,6 +25,12 @@ public class UtilisateurDto {
 
     private String whatsapp;
 
+    private String password;
+
+    private Boolean hasAssignment;
+
+    private String assignedResidenceName;
+
     public static UtilisateurDto fromEntity(Utilisateur utilisateur) {
         if (utilisateur == null) {
             return null;
@@ -38,6 +44,22 @@ public class UtilisateurDto {
                 .nom(utilisateur.getNom())
                 .telephone(utilisateur.getTelephone())
                 .whatsapp(utilisateur.getWhatsapp())
+                .build();
+    }
+
+    public static UtilisateurDto fromEntityWithAssignment(Utilisateur utilisateur, com.touba.backend.model.Assignment assignment) {
+        if (utilisateur == null) return null;
+        return UtilisateurDto.builder()
+                .id(utilisateur.getId())
+                .username(utilisateur.getUsername())
+                .accountType(utilisateur.getAccountType())
+                .statut(utilisateur.getStatut())
+                .prenom(utilisateur.getPrenom())
+                .nom(utilisateur.getNom())
+                .telephone(utilisateur.getTelephone())
+                .whatsapp(utilisateur.getWhatsapp())
+                .hasAssignment(assignment != null)
+                .assignedResidenceName(assignment != null ? assignment.getResidence().getLibelle() : null)
                 .build();
     }
 

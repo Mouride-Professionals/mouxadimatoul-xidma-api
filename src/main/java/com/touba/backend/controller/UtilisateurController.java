@@ -42,4 +42,14 @@ public class UtilisateurController implements UtilisateurApi {
     public UtilisateurDto changeStatut(Long id) {
         return utilisateurService.changeStatut(id);
     }
+
+    @Override
+    public void changePassword(Long id, java.util.Map<String, String> body) {
+        utilisateurService.changePassword(id, body.get("password"));
+    }
+
+    @Override
+    public void changeOwnPassword(java.util.Map<String, String> body) {
+        utilisateurService.changeOwnPassword(body.get("currentPassword"), body.get("newPassword"));
+    }
 }

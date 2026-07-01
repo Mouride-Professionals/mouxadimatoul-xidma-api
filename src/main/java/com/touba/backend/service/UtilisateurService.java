@@ -17,4 +17,8 @@ public interface UtilisateurService {
 
     UtilisateurDto changeStatut(Long id);
 
+    void changePassword(Long id, String newPassword);
+
+    void changeOwnPassword(String currentPassword, String newPassword);
+
 }
