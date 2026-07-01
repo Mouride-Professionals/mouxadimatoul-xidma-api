@@ -32,7 +32,7 @@ public class ApplicationLoader implements CommandLineRunner {
                     true,
                     "Admin",
                     "Admin",
-                    "   ",
+                    "777197482",
                     null
             )));
             evenementRepository.saveAll(List.of(

@@ -13,6 +13,9 @@ public interface PavillonApi {
     @PostMapping
     PavillonDto save(@RequestBody PavillonDto dto);
 
+    @PutMapping("/{id}")
+    PavillonDto update(@PathVariable Long id, @RequestBody PavillonDto dto);
+
     @GetMapping
     List<PavillonDto> findAll();
 

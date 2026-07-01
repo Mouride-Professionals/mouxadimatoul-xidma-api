@@ -20,6 +20,11 @@ public class PavillonController implements PavillonApi {
     }
 
     @Override
+    public PavillonDto update(Long id, PavillonDto dto) {
+        return pavillonService.update(id, dto);
+    }
+
+    @Override
     public List<PavillonDto> findAll() {
         return pavillonService.findAll();
     }

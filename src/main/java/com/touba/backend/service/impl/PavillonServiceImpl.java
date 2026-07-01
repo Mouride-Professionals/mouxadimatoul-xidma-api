@@ -46,6 +46,15 @@ public class PavillonServiceImpl implements PavillonService {
     }
 
     @Override
+    public PavillonDto update(Long id, PavillonDto dto) {
+        Pavillon existing = pavillonRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.PAVILLON_NOT_FOUND, ErrorCode.PAVILLON_NOT_FOUND));
+        existing.setLibelle(dto.getLibelle());
+        existing.setNiveau(dto.getNiveau());
+        return PavillonDto.fromEntity(pavillonRepository.save(existing));
+    }
+
+    @Override
     public List<PavillonDto> findAll() {
         return pavillonRepository.findAll().stream().map(PavillonDto::fromEntity).collect(Collectors.toList());
     }
